@@ -1,0 +1,14 @@
+#logo
+{
+	float: left;
+	font-size: 1.3em;
+	color: #555;
+	text-transform: lowercase;
+	margin-top: 10px;
+}
+
+#logo:hover
+{
+	text-decoration: none;
+	color: #222
+}
