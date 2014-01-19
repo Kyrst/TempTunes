@@ -1,0 +1,26 @@
+{
+    "name": "kyrst/base",
+    "description": "A good base for a new Laravel project.",
+    "keywords": ["kyrst", "base", "laravel"],
+    "authors": [
+        {
+            "name": "Dennis Nygren",
+            "email": "info@dennisnygren.se"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+		"toddish/verify": "2.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations",
+			"src/views",
+			"src/Kyrst/Base/Helpers"
+        ],
+        "psr-0": {
+            "Kyrst\\Base\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

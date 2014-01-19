@@ -1,0 +1,74 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "ca96c90f2c12a0754384f73e5d69c336",
+    "packages": [
+        {
+            "name": "toddish/verify",
+            "version": "v2.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Toddish/Verify-L4.git",
+                "reference": "474822f15cae994d70bf517712fac63d531292c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Toddish/Verify-L4/zipball/474822f15cae994d70bf517712fac63d531292c8",
+                "reference": "474822f15cae994d70bf517712fac63d531292c8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations",
+                    "src/app/database/seeds/"
+                ],
+                "psr-0": {
+                    "Toddish\\Verify": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Todd Francis",
+                    "email": "todd@toddish.co.uk",
+                    "homepage": "http://toddish.co.uk"
+                }
+            ],
+            "description": "A simple authentication bundle for Laravel 4. It features roles, permissions, password salting and is fully extendable.",
+            "homepage": "http://docs.toddish.co.uk/verify-l4/",
+            "keywords": [
+                "auth",
+                "laravel",
+                "permissions",
+                "roles",
+                "verify"
+            ],
+            "time": "2014-01-08 21:03:26"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": [
+
+    ],
+    "platform": {
+        "php": ">=5.3.0"
+    },
+    "platform-dev": [
+
+    ]
+}
