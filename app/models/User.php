@@ -1,52 +1,32 @@
 <?php
+use Kyrst\Base\Models\User as KyrstUser;
 
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableInterface;
+class User extends KyrstUser
+{
+	const URL_PROFILE = 'profile';
+	const URL_SONGS = 'songs';
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'users';
-
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('password');
-
-	/**
-	 * Get the unique identifier for the user.
-	 *
-	 * @return mixed
-	 */
-	public function getAuthIdentifier()
+	public function songs()
 	{
-		return $this->getKey();
+		return $this->hasMany('Song');
 	}
 
-	/**
-	 * Get the password for the user.
-	 *
-	 * @return string
-	 */
-	public function getAuthPassword()
+	public function get_display_name()
 	{
-		return $this->password;
+		return $this->username . ' (' . $this->get_name() . ')';
 	}
 
-	/**
-	 * Get the e-mail address where password reminders are sent.
-	 *
-	 * @return string
-	 */
-	public function getReminderEmail()
+	public function get_link($type)
 	{
-		return $this->email;
-	}
+		if ( $type === self::URL_PROFILE )
+		{
+			return URL::to('users/' . $this->slug);
+		}
+		elseif ( $type === self::URL_SONGS )
+		{
+			return URL::to($this->get_link(self::URL_PROFILE) . '/songs');
+		}
 
+		return null;
+	}
 }

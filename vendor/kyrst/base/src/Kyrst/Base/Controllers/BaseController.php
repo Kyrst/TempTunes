@@ -2,7 +2,7 @@
 namespace Kyrst\Base\Controllers;
 
 use Kyrst\Base\Helpers\Ajax as Ajax;
-use Kyrst\Base\Helpers\Notice as Notice;
+use Kyrst\Base\Helpers\UI as UI;
 
 class BaseController extends \Controller
 {
@@ -31,9 +31,10 @@ class BaseController extends \Controller
 
 	protected $user = NULL;
 
-	protected $notice = NULL;
+	protected $ui = NULL;
 
 	protected $is_ajax;
+	private $did_display = false;
 
 	private $is_from_controller;
 
@@ -41,14 +42,23 @@ class BaseController extends \Controller
 	protected $current_controller;
 	protected $current_page;
 
+	protected $root_dir;
+
 	public function __construct()
 	{
 		$this->user = \Auth::user();
+
+		// CSRF protection
+		//$this->beforeFilter('csrf', array('on' => 'post'));
 	}
 
 	// Initialize
 	public function setupLayout($from_no_controller = false)
 	{
+		global $app;
+
+		$this->root_dir = $app['path.base'];
+
 		$this->is_ajax = \Request::ajax();
 
 		if ( !is_null($this->layout) )
@@ -61,7 +71,11 @@ class BaseController extends \Controller
 			//App::setLocale('es');
 			$this->assign('user', $this->user, array('layout', 'content'));
 
+			// Initialize layout
 			$this->layout = \View::make($this->layout);
+
+			// Initialize page title variable
+			$this->layout->page_title = '';
 
 			// Add current route to views
 			if ( $current_route !== NULL )
@@ -72,7 +86,7 @@ class BaseController extends \Controller
 			{
 				$_route = $this->current_route_action;
 
-				$_route = strtolower(str_replace('Controller', '', $_route));
+				$_route = strtolower(str_replace('Controller', '', $_route['controller']));
 				list($controller, $action) = explode('@', $_route);
 
 				if ( isset($controller) && $controller !== NULL )
@@ -93,13 +107,13 @@ class BaseController extends \Controller
 				$this->assign('popup', $popup, array('js'));
 			}
 
-			// Notice
-			$this->notice = new Notice();
+			// UI
+			$this->ui = new UI();
 
 			$this->current_page = $this->get_current_page();
 			$this->assign('current_page', $this->current_page, array('layout', 'content', 'js'));
 
-			$this->assign('BASE_URL', BASE_URL, 'js');
+			$this->assign('BASE_URL', \URL::route('home', array(), ''), 'js');
 
 			$this->assign('DEBUG', \App::environment() !== 'live' ? true : false, array('layout', 'content', 'js'));
 		}
@@ -155,7 +169,9 @@ class BaseController extends \Controller
 
 	public function display($view_file = NULL, $page_title = '', $page_title_appendix = true, $libs_to_load = array())
 	{
-		$this->layout->page_title = ($page_title !== '') ? $page_title . ($page_title_appendix ? ' ' . PAGE_TITLE_SEPARATOR . ' ' . PAGE_TITLE_APPENDIX : '') : DEFAULT_PAGE_TITLE;
+		$this->did_display = true;
+
+		$this->layout->page_title = ($page_title !== '') ? $page_title . ($page_title_appendix ? ' ' . \Config::get('base::PAGE_TITLE_SEPARATOR') . ' ' . \Config::get('base::PAGE_TITLE_APPENDIX') : '') : \Config::get('base::DEFAULT_PAGE_TITLE');
 
 		$include_css = function($css)
 		{
@@ -197,7 +213,7 @@ class BaseController extends \Controller
 				$include_js($lib['js']);
 		}
 
-		$this->add_js('js/global.js');
+		//$this->add_js('js/global.js');
 
 		foreach ( $this->loaded_libs['user_loaded'] as $lib_name )
 		{
@@ -230,7 +246,7 @@ class BaseController extends \Controller
 		{
 			$_route = $this->current_route_action;
 
-			$_route = strtolower(str_replace('Controller', '', $_route));
+			$_route = strtolower(str_replace('Controller', '', $_route['controller']));
 			list($controller, $action) = explode('@', $_route);
 
 			$css_short_auto_path = 'css/' . $controller . '/' . $action . '.css';
@@ -298,7 +314,7 @@ class BaseController extends \Controller
 		{
 			$_route = $this->current_route_action;
 
-			$_route = strtolower(str_replace('Controller', '', $_route));
+			$_route = strtolower(str_replace('Controller', '', $_route['controller']));
 			list($controller, $action) = explode('@', $_route);
 
 			$current_page = $controller . '/' . $action;

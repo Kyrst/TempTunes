@@ -6,21 +6,20 @@ use Kyrst\Base\Helpers\Time as Time;
 use Toddish\Verify\Models\User as VerifyUser;
 use Toddish\Verify\Models\Role as VerifyRole;
 
+use Toddish\Verify\UserNotFoundException as UserNotFoundException;
+
 class User extends VerifyUser
 {
-	public static function register($email, $username, $password, $first_name = '', $last_name = '', $birthdate = NULL)
+	public static function register($email, $password, $first_name = '', $last_name = '')
 	{
 		$email = trim($email);
 		$password = trim($password);
 
 		$user = new User;
 		$user->email = $email;
-		$user->username = trim($username);
 		$user->password = $password;
-		$user->code = self::generate_code();
 		$user->first_name = trim($first_name);
 		$user->last_name = trim($last_name);
-		$user->birthdate = $birthdate !== NULL ? trim(date(Time::ISO_DATE_FORMAT, strtotime($birthdate))) : NULL;
 		$user->verified = 1;
 		$user->created_at = date(Time::ISO_DATE_FORMAT);
 		$user->save();
@@ -28,33 +27,31 @@ class User extends VerifyUser
 		$role = VerifyRole::find(1);
 		$user->roles()->sync(array($role->id));
 
-		\Auth::attempt
-		(
-			array
-			(
-				'email' => $email,
-				'password' => $password
-			),
-			true
-		);
-
-		$user = \Auth::user();
-
 		return $user;
 	}
 
-	public static function generate_code()
+	public static function login($email, $password, $persistent = true)
 	{
-		$num = 1;
-
-		while ( $num === 1 )
+		try
 		{
-			$code = str_random(4);
-
-			$num = User::where('code', '=', $code)->count();
+			if ( \Auth::attempt(array('email' => $email, 'password' => $password), $persistent) )
+			{
+				return \Auth::user();
+			}
+			else
+			{
+				return false;
+			}
 		}
+		catch ( UserNotFoundException $e )
+		{
+			return false;
+		}
+	}
 
-		return strtoupper($code);
+	public static function log_out()
+	{
+		\Auth::logout();
 	}
 
 	public function get_name()

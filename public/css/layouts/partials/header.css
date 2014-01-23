@@ -1,0 +1,47 @@
+#header
+{
+	border-radius: 0;
+	margin-bottom: 20px;
+}
+
+#header_user_nav
+{
+	margin-top: 10px;
+}
+
+#header_song_container
+{
+	float: right;
+	width: 200px;
+	height: 30px;
+	margin: 10px 30px 0 0;
+	/*background: #EEE;*/
+	font-size: .9em;
+	border-radius: 3px;
+	line-height: 30px;
+}
+
+#header_song_container, #header_song_container a
+{
+	color: #AAA
+}
+
+#header_song_container a
+{
+	text-decoration: underline;
+}
+
+#header_song_container a:hover
+{
+	text-decoration: none;
+}
+
+#header_song_inner
+{
+	margin-left: 10px
+}
+
+#header_email
+{
+	width: 200px;
+}

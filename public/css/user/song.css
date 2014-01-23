@@ -1,0 +1,73 @@
+h1
+{
+	margin-bottom: 8px;
+}
+
+#created_by_user_text
+{
+	margin-bottom: 20px;
+}
+
+#versions_tab .time
+{
+	font-size: .8em;
+	color: #CCC
+}
+
+#versions_tab_content .tab-pane
+{
+	position: relative;
+	margin: 20px;
+}
+
+#versions_tab_content .waveform
+{
+	position: relative;
+}
+
+#versions_tab_content .progress
+{
+	position: absolute;
+	z-index: 10;
+	left: 0;
+	top: 50%;
+	margin-top: -10px;
+	left: 5%;
+	width: 90%;
+}
+
+#versions_tab_content .progress-bar
+{
+	background: #CCC;
+	box-shadow: none;
+}
+
+#versions_tab_content .song-buttons-container
+{
+	position: absolute;
+	top: 165px;
+}
+
+#versions_tab_content .song-buttons-container a
+{
+	margin-right: 3px
+}
+
+#versions_tab_content .edit-button-container
+{
+	font-size: .8em;
+}
+
+#versions_tab_content .pause-button, #versions_tab_content .song-error-container
+{
+	display: none;
+}
+
+#versions_tab_content .song-error-container
+{
+	height: 110px;
+	line-height: 110px;
+	text-align: center;
+	font-size: .9em;
+	color: #AAA
+}

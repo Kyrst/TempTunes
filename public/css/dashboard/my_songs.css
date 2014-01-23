@@ -1,0 +1,77 @@
+#songs .song
+{
+	position: relative;
+	width: 800px;
+	height: 210px;
+	background-color: #F2F2F2;
+	margin-bottom: 18px;
+	border-radius: 6px;
+	padding: 10px 14px;
+}
+
+#songs .header .separator
+{
+	color: #CCC
+}
+
+#songs .header .version-dropdown
+{
+	margin: 0 5px
+}
+
+#songs .waveform
+{
+	position: relative;
+}
+
+/*.waveform wave
+{
+	height: 151px !important;
+}*/
+
+#songs .progress
+{
+	position: absolute;
+	z-index: 10;
+	left: 0;
+	top: 50%;
+	margin-top: -10px;
+	left: 5%;
+	width: 90%;
+}
+
+#songs .progress-bar
+{
+	background: #CCC;
+	box-shadow: none;
+}
+
+#songs .song-buttons-container
+{
+	position: absolute;
+	top: 165px;
+}
+
+#songs .song-buttons-container a
+{
+	margin-right: 3px
+}
+
+#songs .edit-button-container
+{
+	font-size: .8em;
+}
+
+#songs .pause-button, #songs .song-error-container
+{
+	display: none;
+}
+
+#songs .song-error-container
+{
+	height: 110px;
+	line-height: 110px;
+	text-align: center;
+	font-size: .9em;
+	color: #AAA
+}

@@ -39,84 +39,84 @@ ajax_request.prototype =
 		}
 
 		$kyrst.ajax.requests[inst.url] = $.ajax(
+		{
+			type: inst.method,
+			url: inst.url,
+			data: inst.data,
+			dataType: inst.data_type,
+			cache: inst.cache,
+			async: inst.async,
+			beforeSend: function()
 			{
-				type: inst.method,
-				url: inst.url,
-				data: inst.data,
-				dataType: inst.data_type,
-				cache: inst.cache,
-				async: inst.async,
-				beforeSend: function()
+				if ( inst.$form !== null )
 				{
-					if ( inst.$form !== null )
-					{
-						inst.hide_validation();
-					}
-
-					if ( $kyrst.is_function(inst.before) )
-					{
-						inst.before();
-					}
+					inst.hide_validation();
 				}
-			}).done(function(result)
+
+				if ( $kyrst.is_function(inst.before) )
+				{
+					inst.before();
+				}
+			}
+		}).done(function(result)
+		{
+			if ( $kyrst.is_empty(result) )
 			{
-				if ( $kyrst.is_empty(result) )
-				{
-					return false;
-				}
+				return false;
+			}
 
-				// Actions
-				if ( !$kyrst.is_empty(result.actions) )
-				{
-					inst.run_actions(result.actions);
-				}
-
-				// Validation
-				if ( !$kyrst.is_empty(result.validation) )
-				{
-					inst.show_validation(result.validation);
-				}
-
-				// Notices
-				// Successes
-				if ( !$kyrst.is_empty(result.successes) )
-				{
-					$kyrst.ui.show_notices({ successes: result.successes });
-				}
-
-				// Errors
-				if ( !$kyrst.is_empty(result.errors) )
-				{
-					$kyrst.ui.show_notices({ errors: result.errors });
-				}
-
-				if ( $kyrst.is_function(inst.success) )
-				{
-					inst.success(result);
-				}
-
-				// Redirect
-				if ( !$kyrst.is_undefined(result.redirect) )
-				{
-					return $kyrst.redirect(result.redirect);
-				}
-
-				inst.result = result;
-			}).always(function(result)
+			// Actions
+			if ( !$kyrst.is_empty(result.actions) )
 			{
-				if ( $kyrst.is_function(inst.complete) )
-				{
-					inst.complete(result);
-				}
+				inst.run_actions(result.actions);
+			}
 
-				delete $kyrst.ajax.requests[inst.url];
-			}).fail(function()
+			// Validation
+			if ( !$kyrst.is_empty(result.validation) )
 			{
-				if ( $kyrst.is_function(inst.error) )
-				{
-					inst.error();
-				}
-			});
+				inst.show_validation(result.validation);
+			}
+
+			// Notices
+			// Successes
+			if ( !$kyrst.is_empty(result.successes) )
+			{
+				$kyrst.ui.show_notices({ successes: result.successes });
+			}
+
+			// Errors
+			if ( !$kyrst.is_empty(result.errors) )
+			{
+				$kyrst.ui.show_notices({ errors: result.errors });
+			}
+
+			if ( $kyrst.is_function(inst.success) )
+			{
+				inst.success(result);
+			}
+
+			// Redirect
+			if ( !$kyrst.is_undefined(result.redirect) )
+			{
+				return $kyrst.redirect(result.redirect);
+			}
+
+			inst.result = result;
+		}).always(function(result)
+		{
+			if ( $kyrst.is_function(inst.complete) )
+			{
+				inst.complete(result);
+			}
+
+			delete $kyrst.ajax.requests[inst.url];
+		}).fail(function()
+		{
+			if ( $kyrst.is_function(inst.error) )
+			{
+				inst.error();
+			}
+		});
 	},
 
 	run_actions: function(actions)

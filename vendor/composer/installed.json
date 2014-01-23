@@ -879,79 +879,6 @@
         "homepage": "http://symfony.com"
     },
     {
-        "name": "symfony/http-kernel",
-        "version": "2.4.x-dev",
-        "version_normalized": "2.4.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/HttpKernel",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/HttpKernel.git",
-            "reference": "eb1ed60a4a066238106721f67f664fd6382a99ea"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/eb1ed60a4a066238106721f67f664fd6382a99ea",
-            "reference": "eb1ed60a4a066238106721f67f664fd6382a99ea",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3",
-            "psr/log": "~1.0",
-            "symfony/debug": "~2.3",
-            "symfony/event-dispatcher": "~2.1",
-            "symfony/http-foundation": "~2.4"
-        },
-        "require-dev": {
-            "symfony/browser-kit": "~2.2",
-            "symfony/class-loader": "~2.1",
-            "symfony/config": "~2.0",
-            "symfony/console": "~2.2",
-            "symfony/dependency-injection": "~2.0",
-            "symfony/finder": "~2.0",
-            "symfony/process": "~2.0",
-            "symfony/routing": "~2.2",
-            "symfony/stopwatch": "~2.2",
-            "symfony/templating": "~2.2"
-        },
-        "suggest": {
-            "symfony/browser-kit": "",
-            "symfony/class-loader": "",
-            "symfony/config": "",
-            "symfony/console": "",
-            "symfony/dependency-injection": "",
-            "symfony/finder": ""
-        },
-        "time": "2014-01-07 13:28:54",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\HttpKernel\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony HttpKernel Component",
-        "homepage": "http://symfony.com"
-    },
-    {
         "name": "symfony/dom-crawler",
         "version": "2.4.x-dev",
         "version_normalized": "2.4.9999999.9999999-dev",
@@ -1224,12 +1151,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "211e237090842f0bc1813b639633e05267fb0444"
+            "reference": "8876c820c3b31eb3f435ab6419f75aecef4b5412"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/211e237090842f0bc1813b639633e05267fb0444",
-            "reference": "211e237090842f0bc1813b639633e05267fb0444",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/8876c820c3b31eb3f435ab6419f75aecef4b5412",
+            "reference": "8876c820c3b31eb3f435ab6419f75aecef4b5412",
             "shasum": ""
         },
         "require": {
@@ -1243,7 +1170,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP >= 4.3.3."
         },
-        "time": "2014-01-18 17:51:33",
+        "time": "2014-01-22 03:16:33",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1389,19 +1316,19 @@
         "source": {
             "type": "git",
             "url": "https://github.com/nikic/PHP-Parser.git",
-            "reference": "0353c921bd12980399e3e6404ea3931b3356e15a"
+            "reference": "bf9956b6345a606a206ba77484d750676e0e5805"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/0353c921bd12980399e3e6404ea3931b3356e15a",
-            "reference": "0353c921bd12980399e3e6404ea3931b3356e15a",
+            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bf9956b6345a606a206ba77484d750676e0e5805",
+            "reference": "bf9956b6345a606a206ba77484d750676e0e5805",
             "shasum": ""
         },
         "require": {
             "ext-tokenizer": "*",
             "php": ">=5.2"
         },
-        "time": "2013-11-27 19:33:56",
+        "time": "2014-01-20 16:24:18",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1471,18 +1398,142 @@
         ]
     },
     {
+        "name": "toddish/verify",
+        "version": "v2.2.2",
+        "version_normalized": "2.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Toddish/Verify-L4.git",
+            "reference": "474822f15cae994d70bf517712fac63d531292c8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Toddish/Verify-L4/zipball/474822f15cae994d70bf517712fac63d531292c8",
+            "reference": "474822f15cae994d70bf517712fac63d531292c8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2014-01-08 21:03:26",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/migrations",
+                "src/app/database/seeds/"
+            ],
+            "psr-0": {
+                "Toddish\\Verify": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Todd Francis",
+                "email": "todd@toddish.co.uk",
+                "homepage": "http://toddish.co.uk"
+            }
+        ],
+        "description": "A simple authentication bundle for Laravel 4. It features roles, permissions, password salting and is fully extendable.",
+        "homepage": "http://docs.toddish.co.uk/verify-l4/",
+        "keywords": [
+            "auth",
+            "laravel",
+            "permissions",
+            "roles",
+            "verify"
+        ]
+    },
+    {
+        "name": "symfony/http-kernel",
+        "version": "2.4.x-dev",
+        "version_normalized": "2.4.9999999.9999999-dev",
+        "target-dir": "Symfony/Component/HttpKernel",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/HttpKernel.git",
+            "reference": "52e247c4d53d724b376a87abdacc04db5cc747d7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/52e247c4d53d724b376a87abdacc04db5cc747d7",
+            "reference": "52e247c4d53d724b376a87abdacc04db5cc747d7",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "psr/log": "~1.0",
+            "symfony/debug": "~2.3",
+            "symfony/event-dispatcher": "~2.1",
+            "symfony/http-foundation": "~2.4"
+        },
+        "require-dev": {
+            "symfony/browser-kit": "~2.2",
+            "symfony/class-loader": "~2.1",
+            "symfony/config": "~2.0",
+            "symfony/console": "~2.2",
+            "symfony/dependency-injection": "~2.0",
+            "symfony/finder": "~2.0",
+            "symfony/process": "~2.0",
+            "symfony/routing": "~2.2",
+            "symfony/stopwatch": "~2.2",
+            "symfony/templating": "~2.2"
+        },
+        "suggest": {
+            "symfony/browser-kit": "",
+            "symfony/class-loader": "",
+            "symfony/config": "",
+            "symfony/console": "",
+            "symfony/dependency-injection": "",
+            "symfony/finder": ""
+        },
+        "time": "2014-01-20 06:30:15",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\HttpKernel\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony HttpKernel Component",
+        "homepage": "http://symfony.com"
+    },
+    {
         "name": "laravel/framework",
         "version": "4.1.x-dev",
         "version_normalized": "4.1.9999999.9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "34e901dc67ea34da1113e9b9974af8ddf441fd7f"
+            "reference": "da9970de40d99e58843b27e9f01f56bfcf1789ff"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/34e901dc67ea34da1113e9b9974af8ddf441fd7f",
-            "reference": "34e901dc67ea34da1113e9b9974af8ddf441fd7f",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/da9970de40d99e58843b27e9f01f56bfcf1789ff",
+            "reference": "da9970de40d99e58843b27e9f01f56bfcf1789ff",
             "shasum": ""
         },
         "require": {
@@ -1550,7 +1601,7 @@
         "suggest": {
             "doctrine/dbal": "Allow renaming columns and dropping SQLite columns."
         },
-        "time": "2014-01-19 20:18:45",
+        "time": "2014-01-23 04:37:24",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1590,76 +1641,25 @@
         ]
     },
     {
-        "name": "toddish/verify",
-        "version": "v2.2.2",
-        "version_normalized": "2.2.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Toddish/Verify-L4.git",
-            "reference": "474822f15cae994d70bf517712fac63d531292c8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Toddish/Verify-L4/zipball/474822f15cae994d70bf517712fac63d531292c8",
-            "reference": "474822f15cae994d70bf517712fac63d531292c8",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2014-01-08 21:03:26",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/migrations",
-                "src/app/database/seeds/"
-            ],
-            "psr-0": {
-                "Toddish\\Verify": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Todd Francis",
-                "email": "todd@toddish.co.uk",
-                "homepage": "http://toddish.co.uk"
-            }
-        ],
-        "description": "A simple authentication bundle for Laravel 4. It features roles, permissions, password salting and is fully extendable.",
-        "homepage": "http://docs.toddish.co.uk/verify-l4/",
-        "keywords": [
-            "auth",
-            "laravel",
-            "permissions",
-            "roles",
-            "verify"
-        ]
-    },
-    {
         "name": "kyrst/base",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/Kyrst/Base.git",
-            "reference": "ef228ebd61a97c046beb9734482177ec7fa1f907"
+            "reference": "2a92e65b5d066dd1e21689866ed22b03b03024fd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Kyrst/Base/zipball/ef228ebd61a97c046beb9734482177ec7fa1f907",
-            "reference": "ef228ebd61a97c046beb9734482177ec7fa1f907",
+            "url": "https://api.github.com/repos/Kyrst/Base/zipball/2a92e65b5d066dd1e21689866ed22b03b03024fd",
+            "reference": "2a92e65b5d066dd1e21689866ed22b03b03024fd",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0",
             "toddish/verify": "2.2.*"
         },
-        "time": "2014-01-19 20:43:06",
+        "time": "2014-01-23 06:13:20",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

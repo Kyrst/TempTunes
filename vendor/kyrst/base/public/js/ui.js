@@ -47,12 +47,15 @@ ui.prototype =
 			resizable = !$kyrst.is_undefined(extra.resizable) ? extra.resizable : false;
 			draggable = !$kyrst.is_undefined(extra.draggable) ? extra.draggable : false;
 
-			if ( !$kyrst.is_undefined(extra.other.top) )
+			if ( $kyrst.is_defined(extra.other) )
 			{
-				margin_top = extra.other.top;
+				if ( $kyrst.is_defined(extra.other.top) )
+				{
+					margin_top = extra.other.top;
+				}
 			}
 
-			if ( !$kyrst.is_undefined(extra.other.mask) )
+			/*if ( !$kyrst.is_undefined(extra.other.mask) )
 			{
 				var opacity = extra.other.mask.opacity;
 
@@ -63,7 +66,7 @@ ui.prototype =
 				// .ui-widget-overlay {	background: ' + extra.other.mask.color + ' url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .' + opacity + '; filter: Alpha(Opacity=' + opacity + ') }
 
 				//document.write('<style></style>');
-			}
+			}*/
 		}
 
 		var buttons_to_disable_from_start = [];
@@ -143,9 +146,9 @@ ui.prototype =
 				if ( $kyrst.is_object(extra.events) )
 				{
 					// After open
-					if ( $kyrst.is_object(extra.events.open) )
+					if ( $kyrst.is_object(extra.events.on_open) )
 					{
-						$(this).on('dialogopen', extra.events.open);
+						$(this).on('dialogopen', extra.events.on_open);
 					}
 
 					// Before close
@@ -645,9 +648,9 @@ ui.prototype =
 				{
 					var button_click_result;
 
-					if ( $kyrst.is_function(button.click) )
+					if ( $kyrst.is_function(button.on_click) )
 					{
-						button_click_result = button.click();
+						button_click_result = button.on_click();
 					}
 
 					if ( button.close_on_click && button_click_result !== false )

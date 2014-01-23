@@ -3,7 +3,7 @@ namespace Kyrst\Base\Helpers;
 
 class Ajax
 {
-	private $notice;
+	private $ui;
 
 	private $data = array
 	(
@@ -17,11 +17,11 @@ class Ajax
 
 	private $data_keys = array();
 
-	function __construct(Notice $notice)
+	function __construct(UI $ui)
 	{
 		$this->data_keys = array_keys($this->data);
 
-		$this->notice = $notice;
+		$this->ui = $ui;
 	}
 
 	public function add_data($key, $value)
@@ -79,17 +79,29 @@ class Ajax
 		}
 		else
 		{
-			// On AJAX redirect, send the success and error messages to Notice to display after page load
+			// On AJAX redirect, send the success and error messages to UI to display after page load
 			foreach ( $this->data['successes'] as $success )
-				$this->notice->add_success($success);
+				$this->ui->add_success($success);
 
 			foreach ( $this->data['errors'] as $success )
-				$this->notice->add_error($success);
+				$this->ui->add_error($success);
 
-			$this->notice->save_session();
+			$this->ui->save_session();
 		}
 
 		die(json_encode($this->data));
+	}
+
+	public function get_output()
+	{
+		$tmp = $this->data;
+
+		if ( $tmp['redirect'] === NULL )
+		{
+			unset($tmp['redirect']);
+		}
+
+		return json_encode($this->data);
 	}
 
 	public function output_with_error($error)
