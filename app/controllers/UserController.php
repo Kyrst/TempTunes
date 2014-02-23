@@ -16,13 +16,15 @@ class UserController extends BaseController
 
 		$this->assign('profile_user', $user);
 
-		$num_songs = $user->songs->count();
-		$this->assign('num_songs', $num_songs);
+		// Songs
+		$songs = $user->songs->take(5);
+		$this->assign('songs', $songs);
 
 		$this->display
 		(
 			null,
-			$user->get_display_name()
+			$user->get_display_name(),
+			true
 		);
 	}
 
@@ -44,7 +46,8 @@ class UserController extends BaseController
 		$this->display
 		(
 			null,
-			'Songs by ' . $user->get_display_name()
+			'Songs by ' . $user->get_display_name(),
+			true
 		);
 	}
 
@@ -64,27 +67,45 @@ class UserController extends BaseController
 
 		$this->assign('song', $song);
 
-		$song_uploads = Song_Upload::where('song_id', $song->id)->orderBy('created_at', 'DESC')->get();
-		$this->assign('song_uploads', $song_uploads);
+		$song_versions = song_version::where('song_id', $song->id)->orderBy('created_at', 'DESC')->get();
+		$this->assign('song_versions', $song_versions);
 
-		$js_song_uploads = array();
+		$js_song_versions = array();
 
-		foreach ( $song_uploads as $song_upload )
+		foreach ( $song_versions as $song_version )
 		{
-			$js_song_uploads[] = array
+			$js_song_versions[] = array
 			(
-				'id' => $song_upload->id,
-				'version' => $song_upload->version,
-				'filename' => $song_upload->get_filename()
+				'id' => $song_version->id,
+				'version' => $song_version->version,
+				'filename' => $song_version->get_filename()
 			);
 		}
 
-		$this->assign('js_song_uploads', $js_song_uploads, 'js');
+		$this->assign('js_song_versions', $js_song_versions, 'js');
 
 		$this->display
 		(
 			null,
 			$song->get_title() . ' by ' . $song->user->get_display_name()
 		);
+	}
+
+	public function friends($username)
+	{
+		try
+		{
+			$user = User::where('slug', trim($username))->firstOrFail();
+		}
+		catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
+		{
+			$this->ui->add_error('Could not find user.');
+
+			return Redirect::route('home');
+		}
+
+		$this->assign('profile_user', $user);
+
+		$this->display();
 	}
 }

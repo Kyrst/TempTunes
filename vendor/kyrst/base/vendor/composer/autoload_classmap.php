@@ -8,8 +8,9 @@ $baseDir = dirname($vendorDir);
 return array(
     'Kyrst\\Base\\Helpers\\Ajax' => $baseDir . '/src/Kyrst/Base/Helpers/Ajax.php',
     'Kyrst\\Base\\Helpers\\Email' => $baseDir . '/src/Kyrst/Base/Helpers/Email.php',
-    'Kyrst\\Base\\Helpers\\Notice' => $baseDir . '/src/Kyrst/Base/Helpers/Notice.php',
+    'Kyrst\\Base\\Helpers\\File' => $baseDir . '/src/Kyrst/Base/Helpers/File.php',
     'Kyrst\\Base\\Helpers\\Time' => $baseDir . '/src/Kyrst/Base/Helpers/Time.php',
+    'Kyrst\\Base\\Helpers\\UI' => $baseDir . '/src/Kyrst/Base/Helpers/UI.php',
     'UseSoftDelete' => $vendorDir . '/toddish/verify/src/migrations/2013_05_11_082613_use_soft_delete.php',
     'VerifyInit' => $vendorDir . '/toddish/verify/src/migrations/2013_03_17_131246_verify_init.php',
     'VerifyUserSeeder' => $vendorDir . '/toddish/verify/src/app/database/seeds/VerifyUserSeeder.php',

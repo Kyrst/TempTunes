@@ -1,5 +1,6 @@
-var wavesurfers = [],
-	timelines = [],
+var wavesurfers = [];
+
+var timelines = [],
 	num_songs = 0;
 
 $(function()
@@ -94,16 +95,16 @@ $(function()
 	{
 		var $this = $(this),
 			song_id = $this.data('song_id'),
-			song_upload_id = $this.data('song_upload_id');
+			song_version_id = $this.data('song_version_id'),
 			$play_button = document.querySelector('#play_button_' + song_id),
 			$pause_button = document.querySelector('#pause_button_' + song_id),
 			$stop_button = document.querySelector('#stop_button_' + song_id);
 
 		$kyrst.ajax.get
 		(
-			BASE_URL + 'dashboard/my-songs/get-song-upload',
+			BASE_URL + 'dashboard/my-songs/get-song-version',
 			{
-				song_upload_id: song_upload_id
+				song_version_id: song_version_id
 			},
 			{
 				success: function(result)
@@ -115,11 +116,11 @@ $(function()
 					$stop_button.style.display = 'block';
 					$stop_button.setAttribute('disabled');
 
-					wavesurfers[song_id].load(result.data.song_upload.filename);
+					wavesurfers[song_id].load(result.data.song_version.filename);
 
 					$('#song_versions_list_' + song_id + ' li.active').removeClass('active');
-					$('#song_upload_version_' + song_upload_id).addClass('active');
-					$('#song_version_downdown_button_' + song_id).html($('#song_upload_version_' + song_upload_id + ' a').html() + ' <span class="caret"></span>');
+					$('#song_version_version_' + song_version_id).addClass('active');
+					$('#song_version_downdown_button_' + song_id).html($('#song_version_version_' + song_version_id + ' a').html() + ' <span class="caret"></span>');
 				},
 				error: function(error)
 				{
@@ -136,9 +137,13 @@ $(function()
 	var wavesurfer_options =
 	{
 		height			: 96,
-		waveColor		: '#428BCA',
-		progressColor	: '#2D6CA2',
-		loaderColor		: '#FFF',
+		waveColor					: '#5B5B5B',
+		waveStartGradientColor		: '#5B5B5B',
+		waveEndGradientColor		: '#414141',
+		progressColor				: '#428BCA',
+		progressStartGradientColor	: '#619FD4',
+		progressEndGradientColor	: '#428BCA',
+		loaderColor					: '#FFF',
 		cursorColor		: 'navy',
 		cursorWidth		: 0,
 		markerWidth		: 2,

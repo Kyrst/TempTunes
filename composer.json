@@ -5,6 +5,8 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
+		"intervention/image": "dev-master",
+		"intervention/imagecache": "dev-master",
 		"kyrst/base": "dev-master"
 	},
 	"autoload": {

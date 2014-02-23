@@ -10,20 +10,20 @@
 
 	<div id="songs">
 		<?php foreach ( $songs as $song ): ?>
-			<?php $latest_song_upload = $song->get_latest_upload() ?>
+			<?php $latest_song_version = $song->get_latest_version() ?>
 
 			<div id="song_<?= $song->id ?>" class="song">
 				<span class="header">
 					<a href="<?= $song->get_url(Song::URL_PUBLIC) ?>" class="title"><?= $song->get_title() ?></a>
 
 					<div class="version-dropdown btn-group">
-						<button type="button" id="song_version_downdown_button_<?= $song->id ?>" data-selected_song_upload_id="<?= $latest_song_upload->id ?>" data-selected_version="<?= $latest_song_upload->version ?>" class="btn btn-default btn-xs dropdown-toggle<?php if ( $song->uploads->count() === 1 ): ?> disabled<?php endif ?>"" data-toggle="dropdown">
+						<button type="button" id="song_version_downdown_button_<?= $song->id ?>" data-selected_song_version_id="<?= $latest_song_version->id ?>" data-selected_version="<?= $latest_song_version->version ?>" class="btn btn-default btn-xs dropdown-toggle<?php if ( $song->uploads->count() === 1 ): ?> disabled<?php endif ?>"" data-toggle="dropdown">
 							Version <?= $song->version ?> <span class="caret"></span>
 						</button>
 
 						<ul id="song_versions_list_<?= $song->id ?>" class="dropdown-menu" role="menu">
-							<?php foreach ( $song->get_uploads('desc') as $song_upload ): ?>
-								<li id="song_upload_version_<?= $song_upload->id ?>"<?php if ( $song_upload->id === $latest_song_upload->id ): ?> class="active"<?php endif ?>><a href="javascript:" data-song_id="<?= $song_upload->song_id ?>" data-song_upload_id="<?= $song_upload->id ?>" class="change-version">Version <?= $song_upload->version ?></a></li>
+							<?php foreach ( $song->get_uploads('desc') as $song_version ): ?>
+								<li id="song_version_version_<?= $song_version->id ?>"<?php if ( $song_version->id === $latest_song_version->id ): ?> class="active"<?php endif ?>><a href="javascript:" data-song_id="<?= $song_version->song_id ?>" data-song_version_id="<?= $song_version->id ?>" class="change-version">Version <?= $song_version->version ?></a></li>
 							<?php endforeach ?>
 						</ul>
 					</div>
@@ -33,7 +33,7 @@
 					<span class="edit-button-container"><a href="javascript:" data-song_id="<?= $song->id ?>" data-song_title="<?= $song->get_title() ?>" class="delete-song">Delete</a></span>
 				</span>
 
-				<p><?= $song->get_description() ?></p>
+				<p class="song-description"><?= $song->get_description() ?></p>
 
 				<div class="clear"></div>
 

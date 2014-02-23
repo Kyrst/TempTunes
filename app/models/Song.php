@@ -4,6 +4,12 @@ class Song extends Eloquent
 	const URL_PUBLIC = 'public';
 	const URL_EDIT = 'edit';
 
+	const PLAYER_SIZE_BIG = 'big';
+
+	const PLAYER_OPTION_SHOW_VERSIONS = 1;
+	const PLAYER_OPTION_VERSIONS_MODE_DROPDOWN = 2;
+	const PLAYER_OPTION_VERSIONS_MODE_TABBED = 3;
+
 	public function user()
 	{
 		return $this->belongsTo('User');
@@ -11,7 +17,7 @@ class Song extends Eloquent
 
 	public function uploads()
 	{
-		return $this->hasMany('Song_Upload');
+		return $this->hasMany('Song_Version');
 	}
 
 	public function get_title()
@@ -45,18 +51,18 @@ class Song extends Eloquent
 
 	public function get_uploads($order = 'ASC')
 	{
-		$song_uploads = Song_Upload::where('song_id', $this->id)
+		$song_versions = Song_Version::where('song_id', $this->id)
 			->orderBy('created_at', $order)
 			->get();
 
-		return $song_uploads;
+		return $song_versions;
 	}
 
-	public function get_latest_upload()
+	public function get_latest_version()
 	{
 		try
 		{
-			$song_upload = Song_Upload::where('song_id', $this->id)
+			$song_version = Song_Version::where('song_id', $this->id)
 				->orderBy('created_at', 'DESC')
 				->firstOrFail();
 		}
@@ -66,14 +72,48 @@ class Song extends Eloquent
 		}
 		finally
 		{
-			return $song_upload;
+			return $song_version;
 		}
 	}
 
-	public function get_latest_uploads()
+	public function get_latest_versions()
 	{
-		return Song_Upload::where('song_id', $this->id)
+		return Song_Version::where('song_id', $this->id)
 			->orderBy('created_at', 'DESC')
 			->get();
+	}
+
+	public function print_player($size, $song_version_id = NULL, $options = array())
+	{
+		if ( !in_array($size, array(self::PLAYER_SIZE_BIG)) )
+		{
+			throw new Exception('Invalid size "' . $size . '".');
+		}
+
+		// If no version specified, get latest
+		if ( $song_version_id === NULL )
+		{
+			$song_version = $this->get_latest_version();
+		}
+		else
+		{
+			try
+			{
+				$song_version = Song_Version::where('id', $song_version_id)->firstOrFail();
+			}
+			catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
+			{
+				$song_version = NULL;
+			}
+		}
+
+		$player_view = View::make('partials/player/' . $size);
+		$player_view->song = $this;
+		$player_view->song_version = $song_version;
+		$player_view->identifier = $this->id . '_' . $song_version->id;
+		$player_view->size = $size;
+		$player_view->user_id = $song_version->song->user_id;
+
+		echo $player_view->render();
 	}
 }

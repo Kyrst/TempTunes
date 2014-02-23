@@ -1,23 +1,23 @@
 [
     {
         "name": "toddish/verify",
-        "version": "v2.2.2",
-        "version_normalized": "2.2.2.0",
+        "version": "v2.3.0",
+        "version_normalized": "2.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Toddish/Verify-L4.git",
-            "reference": "474822f15cae994d70bf517712fac63d531292c8"
+            "reference": "378e67a0faa92bb7eefc4127059d28bef6edac70"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Toddish/Verify-L4/zipball/474822f15cae994d70bf517712fac63d531292c8",
-            "reference": "474822f15cae994d70bf517712fac63d531292c8",
+            "url": "https://api.github.com/repos/Toddish/Verify-L4/zipball/378e67a0faa92bb7eefc4127059d28bef6edac70",
+            "reference": "378e67a0faa92bb7eefc4127059d28bef6edac70",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2014-01-08 21:03:26",
+        "time": "2014-01-20 21:35:07",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -48,6 +48,50 @@
             "permissions",
             "roles",
             "verify"
+        ]
+    },
+    {
+        "name": "twitter/bootstrap",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/twbs/bootstrap.git",
+            "reference": "d675284cf65b0b1c30ed555f3148dd880a52da27"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d675284cf65b0b1c30ed555f3148dd880a52da27",
+            "reference": "d675284cf65b0b1c30ed555f3148dd880a52da27",
+            "shasum": ""
+        },
+        "time": "2014-02-03 10:38:18",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jacob Thornton",
+                "email": "jacobthornton@gmail.com"
+            },
+            {
+                "name": "Mark Otto",
+                "email": "markdotto@gmail.com"
+            }
+        ],
+        "description": "Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.",
+        "homepage": "http://getbootstrap.com",
+        "keywords": [
+            "bootstrap",
+            "css"
         ]
     }
 ]

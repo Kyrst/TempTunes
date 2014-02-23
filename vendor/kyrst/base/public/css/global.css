@@ -1,6 +1,8 @@
 body
 {
-	overflow-y: scroll
+	overflow-y: scroll;
+	margin: 0;
+	padding: 0;
 }
 
 .kyrst-dialog
@@ -18,7 +20,42 @@ body
 	margin-top: 7px
 }
 
+.kyrst-dialog-error
+{
+	width: 100%;
+	text-align: center;
+}
+
 textarea
 {
 	resize: none
+}
+
+/* Use clearfix class on parent to clear nested columns,
+or wrap each row of columns in a <div class="row"> */
+.clearfix:before,
+.clearfix:after,
+.row:before,
+.row:after {
+	content: '\0020';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0; }
+.row:after,
+.clearfix:after {
+	clear: both; }
+.row,
+.clearfix {
+	zoom: 1; }
+
+/* You can also use a <br class="clear" /> to clear columns */
+.clear {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
 }

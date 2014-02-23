@@ -36,7 +36,7 @@ ui.prototype =
 			draggable = false,
 			margin_top = 80;
 
-		if ( !$kyrst.is_undefined(extra) )
+		if ( $kyrst.is_defined(extra) )
 		{
 			auto_open = (typeof extra.auto_open !== 'undefined') ? extra.auto_open : false;
 
@@ -261,6 +261,13 @@ ui.prototype =
 
 			$('#' + dialog_id + '_loader').hide();
 			$('#' + dialog_id + '_body').show();
+		};
+
+		dialog.show_error = function(error)
+		{
+			var height = dialog.dialog('option', 'height') - 140;
+
+			$('#' + this.attr('id') + '_body').html('<div class="kyrst-dialog-error" style="height:' + height + 'px;line-height:' + height + 'px">' + error + '</div>');
 		};
 
 		dialog.open = function()
@@ -684,6 +691,16 @@ ui.prototype =
 			button.disable = function()
 			{
 				$(this.selector).prop('disabled', true);
+			};
+
+			button.show = function()
+			{
+				$(this.selector).css('visibility', 'visible');
+			};
+
+			button.hide = function()
+			{
+				$(this.selector).css('visibility', 'hidden');
 			};
 
 			button.set_title = function(title, disable)

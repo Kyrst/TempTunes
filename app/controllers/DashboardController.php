@@ -1,7 +1,4 @@
 <?php
-use Kyrst\Base\Helpers\Ajax as Ajax;
-use Kyrst\Base\Helpers\File as File;
-
 class DashboardController extends BaseController
 {
 	public $layout = 'layouts/dashboard';
@@ -48,9 +45,21 @@ class DashboardController extends BaseController
 		$this->user->last_name = $last_name;
 		$this->user->save();
 
-		$ajax = new Ajax($this->ui);
-		$ajax->add_success('Settings successfully saved.');
-		$ajax->output();
+		$this->ajax->add_success('Settings successfully saved.');
+		$this->ajax->output();
+	}
+
+	public function upload_photo()
+	{
+		// Upload profile picture
+		User::upload_photo(Input::file('photo'), $this->user->id);
+
+		$this->user->photo = 'yes';
+		$this->user->save();
+
+		$this->ui->add_success('Photo successfully uploaded!');
+
+		return Redirect::route('dashboard/settings');
 	}
 
 	public function my_songs()
@@ -81,34 +90,33 @@ class DashboardController extends BaseController
 		);
 	}
 
-	public function get_song_upload()
+	public function get_song_version()
 	{
 		$input = Input::all();
 
-		$song_upload_id = $input['song_upload_id'];
-
-		$ajax = new Ajax($this->ui);
+		$song_version_id = $input['song_version_id'];
 
 		try
 		{
-			$song_upload = Song_Upload::find($song_upload_id)->firstOrFail();
+			$song_version = song_version::find($song_version_id)->firstOrFail();
 		}
 		catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
 		{
-			$ajax->output_with_error('Version not found.');
+			$this->ajax->output_with_error('Version not found.');
 		}
 
-		$ajax->add_data
+		$this->ajax->add_data
 		(
-			'song_upload',
+			'song_version',
 			array
 			(
-				'title' => $song_upload->title,
-				'filename' => $song_upload->get_filename()
+				'title' => $song_version->title,
+				'filename' => $song_version->get_filename(),
+				'route' => $song_version->get_route()
 			)
 		);
 
-		$ajax->output();
+		$this->ajax->output();
 	}
 
 	public function upload_songs($song_id = null)
@@ -132,10 +140,10 @@ class DashboardController extends BaseController
 		$this->assign('song', $song);
 		$this->assign('current_song_id', $song !== null ? $song->id : 0, 'js');
 
-		$max_upload_size = File::format_filesize_from_ini(ini_get('upload_max_filesize'));
+		$max_upload_size = Kyrst\Base\Helpers\File::format_filesize_from_ini(ini_get('upload_max_filesize'));
 
 		$this->assign('max_upload_size', $max_upload_size, array('content', 'js'));
-		$this->assign('max_upload_size_formatted', File::format_bytes($max_upload_size));
+		$this->assign('max_upload_size_formatted', Kyrst\Base\Helpers\File::format_bytes($max_upload_size));
 
 		$this->display
 		(
@@ -171,18 +179,18 @@ class DashboardController extends BaseController
 		}
 
 		// Create Song Upload
-		$song_upload = new Song_Upload();
-		$song_upload->song_id = $song->id;
-		$song_upload->original_filename = $original_filename;
-		$song_upload->title = $original_filename;
-		$song_upload->version = $song->version;
-		$song_upload->save();
+		$song_version = new song_version();
+		$song_version->song_id = $song->id;
+		$song_version->original_filename = $original_filename;
+		$song_version->title = $original_filename;
+		$song_version->version = $song->version;
+		$song_version->save();
 
 		$filename_without_extension = $song->id;
 		$filename = $filename_without_extension . '.' . $extension;
 
 		// Create directory if not already exists
-		$uploads_dir = $this->root_dir . '/public/uploads/' . $this->user->id . '/' . $song->id . '/' . ($song->version !== null ? 'v' . $song->version . '/' : '');
+		$uploads_dir = User::get_songs_dir($this->user->id, $song->id, $song->version);
 
 		if ( !file_exists($uploads_dir) )
 		{
@@ -190,22 +198,46 @@ class DashboardController extends BaseController
 		}
 
 		// Upload!
-		$upload_success = $input['file']->move($uploads_dir, $filename);
+		$move_result = $input['file']->move($uploads_dir, $filename);
+
+		$wav_filepath = $uploads_dir . $filename;
 
 		// If WAV, convert to MP3
 		if ( $extension === 'wav' )
 		{
 			// Convert to MP3
-			$convert_to_mp3_cmd = Config::get('audio.LAME') . ' -q0 -b128 "' . $uploads_dir . $filename  . '" "' . $filename_without_extension . '.mp3" ' . Config::get('audio.STDOUT');
+			$convert_to_mp3_cmd = Config::get('audio.LAME') . ' -q0 -b128 "' . $wav_filepath  . '" "' . $filename_without_extension . '.mp3" ' . Config::get('audio.STDOUT');
 
 			exec($convert_to_mp3_cmd, $result);
 		}
 		else // If anything else than WAV, like an MP3 for example, convert to WAV
 		{
+			$wav_filepath = $uploads_dir . $filename_without_extension . '.wav';
+
 			// Convert to WAV
-			$convert_to_wav_cmd = Config::get('audio.SOX') . ' ' . $uploads_dir . $filename . ' -c1 -r 8000 ' . $uploads_dir . $filename_without_extension . '.wav --norm ' . Config::get('audio.STDOUT');
+			$convert_to_wav_cmd = Config::get('audio.SOX') . ' ' . $uploads_dir . $filename . ' -c1 -r 8000 ' . $wav_filepath . ' --norm ' . Config::get('audio.STDOUT');
 
 			exec($convert_to_wav_cmd, $result);
+		}
+
+		// Get BPM
+
+
+		// Generate waveform
+		$waveform_images_dir = $uploads_dir . 'waveform_images/';
+
+		if ( !file_exists($waveform_images_dir) )
+		{
+			mkdir($waveform_images_dir, 0775, true);
+		}
+
+		$sizes = Config::get('audio.player_sizes');
+
+		foreach ( $sizes as $size_name => $size )
+		{
+			$generate_waveform_cmd = Config::get('audio.waveform') . ' ' . $wav_filepath . ' ' . $waveform_images_dir . $size_name . '.png -W' . $size['width'] . ' -H' . $size['height'] . ' -b#FFFFFF -ctransparent ' . Config::get('audio.STDOUT');
+
+			exec($generate_waveform_cmd, $result);
 		}
 
 		$result = array
@@ -233,25 +265,23 @@ class DashboardController extends BaseController
 
 		$song_id = $input['song_id'];
 
-		$ajax = new Ajax($this->ui);
-
 		try
 		{
 			$song = Song::find($song_id)->firstOrFail();
 		}
 		catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
 		{
-			$ajax->output_with_error('Could not find song.');
+			$this->ajax->output_with_error('Could not find song.');
 		}
 
-		Song_Upload::where('song_id', $song->id)->delete();
+		song_version::where('song_id', $song->id)->delete();
 
 		$song->delete();
 
 		// Delete files
 		Kyrst\Base\Helpers\File::remove_dir($song->get_dir());
 
-		$ajax->output();
+		$this->ajax->output();
 	}
 
 	public function edit_song($song_slug)
@@ -269,20 +299,19 @@ class DashboardController extends BaseController
 
 		if ( $this->is_ajax )
 		{
-			$ajax = new Ajax($this->ui);
-
 			$input = Input::all();
 
 			if ( count($input) > 0 )
 			{
 				$song->title = trim($input['title']);
+				$song->description = trim($input['description']);
 				$song->save();
 
-				$ajax->output();
+				$this->ajax->output();
 			}
 			else
 			{
-				$ajax->output_with_error('NO_POST');
+				$this->ajax->output_with_error('NO_POST');
 			}
 		}
 
@@ -293,5 +322,15 @@ class DashboardController extends BaseController
 			null,
 			'Edit "' . $song->get_title() . '"'
 		);
+	}
+
+	public function delete_user_photo()
+	{
+		$this->user->delete_photo();
+
+		$this->user->photo = 'no';
+		$this->user->save();
+
+		$this->ajax->output();
 	}
 }

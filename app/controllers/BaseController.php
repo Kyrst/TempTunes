@@ -9,6 +9,11 @@ class BaseController extends ApplicationController
 	{
 		parent::__construct();
 
+		$this->libs['underscore'] = array
+		(
+			'js' => 'libs/underscore/underscore.js'
+		);
+
 		$this->libs['wavesurfer'] = array
 		(
 			'js' => array
@@ -22,14 +27,36 @@ class BaseController extends ApplicationController
 
 		$this->libs['wavesurfer.timeline'] = array
 		(
-			'js' => array
-			(
-				'libs/wavesurfer/plugin/wavesurfer.timeline.js',
-			)
+			'js' => 'libs/wavesurfer/plugin/wavesurfer.timeline.js'
 		);
 
-		$this->load_lib('wavesurfer');
-		$this->load_lib('wavesurfer.timeline');
+		$this->libs['buzz'] = array
+		(
+			'js' => 'libs/buzz/buzz.min.js'
+		);
+
+		$this->libs['player_manager'] = array
+		(
+			'js' => 'js/player_manager/player_manager.js'
+		);
+
+		/*$this->add_lib
+		(
+			'PxLoader',
+			NULL,
+			array
+			(
+				'libs/pxloader/PxLoader.js',
+				'libs/pxloader/PxLoaderWavesurferJS.js'
+			)
+		);*/
+
+		$this->load_lib('underscore');
+		$this->load_lib('buzz');
+		//$this->load_lib('wavesurfer');
+		//$this->load_lib('wavesurfer.timeline');
+		$this->load_lib('player_manager');
+		//$this->load_lib('PxLoader');
 	}
 
 	public function setupLayout($from_no_controller = false)
@@ -43,12 +70,13 @@ class BaseController extends ApplicationController
 		{
 			if ( $this->user !== NULL )
 			{
-				$this->num_songs = $this->user->songs->count();
+				$this->num_songs = $this->user->songs !== NULL ? $this->user->songs->count() : 0;
 			}
 
 			$header_view = View::make('layouts/partials/header');
 			$header_view->user = $this->user;
 			$header_view->num_songs = $this->num_songs;
+			$header_view->header_player_html = View::make('partials/player/header')->render();
 
 			$this->assign('header_html', $header_view->render(), 'layout');
 

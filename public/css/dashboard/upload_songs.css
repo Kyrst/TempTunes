@@ -1,76 +1,54 @@
-#max_upload_size_text
-{
-	margin-bottom: 15px;
-}
+#max_upload_size_text {
+  margin-bottom: 15px; }
 
-#max_upload_size
-{
-	font-weight: bold;
-}
+#max_upload_size {
+  font-weight: bold; }
 
-#upload_progress_items .upload-item
-{
-	width: 300px;
-	padding: 8px 10px;
-	background-color: #F2F2F2;
-	border-radius: 4px;
-	margin-bottom: 8px
-}
+#upload_progress_items .upload-item {
+  width: 300px;
+  padding: 8px 10px;
+  background-color: #F2F2F2;
+  border-radius: 4px;
+  margin-bottom: 8px; }
 
-#upload_progress_items .upload-item-title
-{
-	display: block;
-	font-size: .9em;
-}
+#upload_progress_items .upload-item-title {
+  display: block;
+  font-size: .9em; }
 
-#upload_progress_items .upload-item-progress-bar
-{
-	width: 225px;
-}
+#upload_progress_items .upload-item-progress-bar {
+  width: 225px; }
 
-#upload_progress_items .upload-item-progress-status
-{
-	font-size: .9em;
-	margin-left: 5px;
-}
+#upload_progress_items .upload-item-progress-status {
+  font-size: .9em;
+  margin-left: 5px; }
 
-#upload_progress_items .upload-item-progress-buttons, #upload_progress_items .upload-item-status
-{
-	list-style-type: none;
-	padding-left: 0;
-	margin: 0;
-	height: 10px;
-}
+#upload_progress_items .upload-item-progress-buttons, #upload_progress_items .upload-item-status {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  height: 18px; }
 
-#upload_progress_items .upload-item-progress-buttons a
-{
-	font-size: .9em;
-	text-decoration: underline;
-}
+#upload_progress_items .upload-item-progress-buttons a {
+  font-size: .9em;
+  text-decoration: underline; }
 
-#upload_progress_items .upload-item-progress-buttons a:hover
-{
-	text-decoration: none;
-}
+#upload_progress_items .upload-item-progress-buttons a:hover {
+  text-decoration: none; }
 
-#upload_progress_items .upload-item-status
-{
-	display: none;
-	font-size: .9em;
-	line-height: 22px
-}
+#upload_progress_items .upload-item-status {
+  display: none;
+  font-size: .9em;
+  line-height: 22px; }
 
-#upload_progress_items .upload-item-status.error
-{
-	color: red
-}
+#upload_progress_items .upload-item-status.error {
+  color: red; }
 
-#upload_progress_items .upload-item-status.success
-{
-}
+#upload_progress_items .upload-item-done-container {
+  display: none;
+  margin-top: 5px; }
+#upload_progress_items .upload-item-done-container {
+  font-size: 0.9em; }
 
-#upload_complete_container
-{
-	display: none;
-	font-size: .9em;
-}
+#upload_complete_container {
+  display: none;
+  font-size: .9em; }

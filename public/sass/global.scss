@@ -1,0 +1,465 @@
+@import 'colors';
+
+$player_big_waveform_height: 96px;
+$player_header_waveform_width: 320px;
+$player_header_waveform_height: 32px;
+$progress_bar_time_height: 13px;
+$player_big_progress_bar_height: 20px;
+
+body
+{
+	overflow-y: auto !important
+}
+
+h1
+{
+	margin-top: 0
+}
+
+.content-separator
+{
+	margin-bottom: 10px;
+	clear: both;
+}
+
+.content-separator.larger
+{
+	margin-bottom: 15px;
+}
+
+.content-separator.largest
+{
+	margin-bottom: 20px;
+}
+
+/* Use clearfix class on parent to clear nested columns,
+or wrap each row of columns in a <div class="row"> */
+.clearfix:before,
+.clearfix:after,
+.row:before,
+.row:after {
+	content: '\0020';
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0; }
+.row:after,
+.clearfix:after {
+	clear: both; }
+.row,
+.clearfix {
+	zoom: 1; }
+
+/* You can also use a <br class="clear" /> to clear columns */
+.clear {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+/* Player */
+.player
+{
+	position: relative;
+
+	.waveform-background
+	{
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(to bottom,  #7d7e7d 0%,#0e0e0e 100%);
+	}
+
+	.waveform
+	{
+		display: none;
+		position: relative;
+	}
+
+	.progress
+	{
+		position: absolute;
+		z-index: 10;
+		width: 90%;
+		top: 50%;
+		left: 5%;
+	}
+
+	.progress-bar
+	{
+		background: #CCC;
+		box-shadow: none;
+
+		span
+		{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			color: #FFF;
+		}
+	}
+
+	.progress-bar-time
+	{
+		display: none;
+		position: absolute;
+		left: 0;
+		height: $progress_bar_time_height;
+		background: black;
+		color: $color_blue_sky;
+		z-index: 11;
+		font-size: .7em;
+		line-height: 12px;
+		padding: 0 3px;
+	}
+
+	.controls-container a
+	{
+		margin-right: 2px
+	}
+
+	.controls-container a.last
+	{
+		margin-right: 0
+	}
+
+	.pause-button, .comment-bubble
+	{
+		display: none
+	}
+
+	$comment_bubble_width: 300px;
+	$comment_bubble_height: 110px;
+	$comment_bubble_border_colors: #CCC;
+
+	.comment-bubble
+	{
+		z-index: 200;
+		position: absolute;
+		width: $comment_bubble_width;
+		height: $comment_bubble_height;
+		top: 150px;
+		left: 180px;
+		background-color: #FFF;
+		border: 1px solid $comment_bubble_border_colors;
+		border-radius: 3px;
+		box-shadow: 2px 2px 1px rgba(0, 0, 0, .15);
+		padding: 8px;
+
+		.value
+		{
+			border: 1px solid $comment_bubble_border_colors;
+			margin: 0;
+			width: $comment_bubble_width - 19px;
+			height: $comment_bubble_height - 45px;
+			outline: none;
+			padding: 6px;
+			font-size: .8em;
+		}
+
+		.controls
+		{
+			margin-top: 6px;
+			font-size: .9em;
+
+			label
+			{
+				color: #555;
+				font-weight: normal;
+			}
+
+			.input-value
+			{
+				width: 45px;
+				border: 1px solid $comment_bubble_border_colors;
+				font-size: .9em;
+				padding: 3px 4px 2px;
+				outline: none;
+			}
+
+			.input-value[disabled]
+			{
+				background: #F2F2F2;
+			}
+		}
+	}
+
+	.add-comment-marker-container
+	{
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: $player_big_waveform_height;
+		width: 1px;
+		z-index: 200;
+		background-color: $color_pale_aqua;
+	}
+
+	.comments-container
+	{
+		display: none;
+		position: absolute;
+		height: 20px;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		z-index: 190;
+
+		$comment_height: 14px;
+
+		.comment
+		{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 14px;
+			height: $comment_height;
+			cursor: pointer;
+			background: #555;
+
+			$comment_hover_height: 40px;
+
+			.comment-hover
+			{
+				display: none;
+				position: absolute;
+				left: 0;
+				//top: -$comment_hover_height;
+				top: -$player_big_waveform_height;
+				height: $player_big_waveform_height;
+				//background: rgba(255, 255, 255, 0.3);
+				background-color: rgba(0, 0, 0, .2);
+				//background-color: $purple_transparent;
+				font-size: .8em;
+				cursor: default;
+			}
+		}
+
+		.comment-data
+		{
+			display: none;
+			position: absolute;
+			top: 0;
+			background-color: #333;
+			color: #FFF;
+			padding: 3px 8px 5px 8px;
+			font-size: .7em;
+			z-index: 100;
+
+			span
+			{
+				font-size: .9em;
+				color: #CCC
+			}
+
+			p
+			{
+				margin: 0
+			}
+		}
+	}
+
+	$add_comment_marker_border_color: #EEE;
+
+	.marker
+	{
+		display: none;
+		background: #CCC;
+		width: 3px;
+		border-left: 1px solid $add_comment_marker_border_color;
+		border-right: 1px solid $add_comment_marker_border_color;
+		height: $player_big_waveform_height;
+		cursor: ew-resize;
+	}
+
+	.add-comment-start-marker
+	{
+		float: left;
+	}
+
+	.add-comment-end-marker
+	{
+		float: right;
+	}
+
+	// Big
+	&.big
+	{
+		margin-bottom: 16px;
+
+		.header
+		{
+			margin-bottom: 9px;
+
+			h2
+			{
+				font-size: 1.8em;
+				line-height: 31px;
+				margin: 0 15px 0 0;
+
+				a
+				{
+					color: #333
+				}
+
+				a:hover
+				{
+					text-decoration: none;
+				}
+			}
+
+			.uploaded
+			{
+				float: right;
+				color: #AAA;
+				font-size: .8em;
+				margin: 11px 8px 0 0;
+			}
+
+			.checkbox
+			{
+				margin: 10px 7px 0 0;
+				cursor: pointer;
+			}
+
+			.version-dropdown
+			{
+				margin-top: 6px;
+			}
+		}
+
+		.waveform
+		{
+			height: $player_big_waveform_height;
+			background-size: 100% 100%;
+			background-repeat: no-repeat;
+		}
+
+		.waveform-and-timeline-container
+		{
+			position: relative;
+			height: $player_big_waveform_height;
+			margin-bottom: 7px;
+			background: #F2F2F2;
+			border-radius: 3px;
+		}
+
+		.waveform-mask
+		{
+			-webkit-border-radius: 3px;
+			-webkit-border-bottom-left-radius: 0;
+			-moz-border-radius: 3px;
+			-moz-border-radius-bottomleft: 0;
+			border-radius: 3px;
+			border-bottom-left-radius: 0;
+			overflow: hidden;
+			-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+		}
+
+		.waveform-container
+		{
+			height: $player_big_waveform_height;
+			position: relative;
+			background: #F2F2F2;
+			border-radius: 3px;
+			overflow: hidden;
+			margin-bottom: 8px;
+
+			.loading-container
+			{
+				text-align: center;
+				height: $player_big_waveform_height;
+				line-height: $player_big_waveform_height;
+				font-size: .9em;
+				color: #AAA;
+			}
+
+			.progress-container
+			{
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: $player_big_waveform_height;
+				background-color: rgba(255, 255, 255, .3);
+			}
+		}
+
+		.waveform-container.loaded
+		{
+			//background: transparent;
+		}
+
+		.progress-bar-time
+		{
+			cursor: default;
+			top: $player_big_waveform_height / 2 - ($progress_bar_time_height / 2);
+		}
+
+		.progress-bar-time::selection
+		{
+			background-color: #000;
+		}
+
+		.progress-bar-time::-moz-selection
+		{
+			background-color: #000;
+		}
+
+		.progress
+		{
+			height: $player_big_progress_bar_height;
+			top: ($player_big_waveform_height / 2) - ($player_big_progress_bar_height / 2);
+		}
+
+		.duration-time-bar
+		{
+			display: none;
+			position: absolute;
+			width: 33px;
+			right: 0;
+			top: $player_big_waveform_height / 2 - ($progress_bar_time_height / 2);
+			font-size: .7em;
+			z-index: 10;
+			text-align: center;
+			height: $progress_bar_time_height;
+			background: black;
+			color: #FFF;
+			line-height: 12px;
+			padding: 0 3px;
+		}
+
+		.player-error-container
+		{
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			height: $player_big_waveform_height;
+			line-height: $player_big_waveform_height;
+			color: #AAA;
+			font-size: .9em;
+		}
+	}
+}
+
+.waveform-container::selection, .waveform-container::-moz-selection, .player::selection, .player::-moz-selection
+{
+	background-color: #FFF;
+}
+
+.tab-content .tab-pane
+{
+	margin-top: 13px
+}

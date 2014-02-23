@@ -1,28 +1,18 @@
-body
-{
-	overflow-y: auto !important
-}
+body {
+  overflow-y: auto !important; }
 
-h1
-{
-	margin-top: 0
-}
+h1 {
+  margin-top: 0; }
 
-.content-separator
-{
-	margin-bottom: 10px;
-	clear: both;
-}
+.content-separator {
+  margin-bottom: 10px;
+  clear: both; }
 
-.content-separator.larger
-{
-	margin-bottom: 15px;
-}
+.content-separator.larger {
+  margin-bottom: 15px; }
 
-.content-separator.largest
-{
-	margin-bottom: 20px;
-}
+.content-separator.largest {
+  margin-bottom: 20px; }
 
 /* Use clearfix class on parent to clear nested columns,
 or wrap each row of columns in a <div class="row"> */
@@ -30,25 +20,269 @@ or wrap each row of columns in a <div class="row"> */
 .clearfix:after,
 .row:before,
 .row:after {
-	content: '\0020';
-	display: block;
-	overflow: hidden;
-	visibility: hidden;
-	width: 0;
-	height: 0; }
+  content: '\0020';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0; }
+
 .row:after,
 .clearfix:after {
-	clear: both; }
+  clear: both; }
+
 .row,
 .clearfix {
-	zoom: 1; }
+  zoom: 1; }
 
 /* You can also use a <br class="clear" /> to clear columns */
 .clear {
-	clear: both;
-	display: block;
-	overflow: hidden;
-	visibility: hidden;
-	width: 0;
-	height: 0;
-}
+  clear: both;
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0; }
+
+/* Player */
+.player {
+  position: relative; }
+  .player .waveform-background {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #7d7e7d 0%, #0e0e0e 100%); }
+  .player .waveform {
+    display: none;
+    position: relative; }
+  .player .progress {
+    position: absolute;
+    z-index: 10;
+    width: 90%;
+    top: 50%;
+    left: 5%; }
+  .player .progress-bar {
+    background: #CCC;
+    box-shadow: none; }
+    .player .progress-bar span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #FFF; }
+  .player .progress-bar-time {
+    display: none;
+    position: absolute;
+    left: 0;
+    height: 13px;
+    background: black;
+    color: #619fd4;
+    z-index: 11;
+    font-size: .7em;
+    line-height: 12px;
+    padding: 0 3px; }
+  .player .controls-container a {
+    margin-right: 2px; }
+  .player .controls-container a.last {
+    margin-right: 0; }
+  .player .pause-button, .player .comment-bubble {
+    display: none; }
+  .player .comment-bubble {
+    z-index: 200;
+    position: absolute;
+    width: 300px;
+    height: 110px;
+    top: 150px;
+    left: 180px;
+    background-color: #FFF;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.15);
+    padding: 8px; }
+    .player .comment-bubble .value {
+      border: 1px solid #cccccc;
+      margin: 0;
+      width: 281px;
+      height: 65px;
+      outline: none;
+      padding: 6px;
+      font-size: .8em; }
+    .player .comment-bubble .controls {
+      margin-top: 6px;
+      font-size: .9em; }
+      .player .comment-bubble .controls label {
+        color: #555;
+        font-weight: normal; }
+      .player .comment-bubble .controls .input-value {
+        width: 45px;
+        border: 1px solid #cccccc;
+        font-size: .9em;
+        padding: 3px 4px 2px;
+        outline: none; }
+      .player .comment-bubble .controls .input-value[disabled] {
+        background: #F2F2F2; }
+  .player .add-comment-marker-container {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 96px;
+    width: 1px;
+    z-index: 200;
+    background-color: rgba(49, 115, 150, 0.6); }
+  .player .comments-container {
+    display: none;
+    position: absolute;
+    height: 20px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 190; }
+    .player .comments-container .comment {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      background: #555; }
+      .player .comments-container .comment .comment-hover {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: -96px;
+        height: 96px;
+        background-color: rgba(0, 0, 0, 0.2);
+        font-size: .8em;
+        cursor: default; }
+    .player .comments-container .comment-data {
+      display: none;
+      position: absolute;
+      top: 0;
+      background-color: #333;
+      color: #FFF;
+      padding: 3px 8px 5px 8px;
+      font-size: .7em;
+      z-index: 100; }
+      .player .comments-container .comment-data span {
+        font-size: .9em;
+        color: #cccccc; }
+      .player .comments-container .comment-data p {
+        margin: 0; }
+  .player .marker {
+    display: none;
+    background: #CCC;
+    width: 3px;
+    border-left: 1px solid #eeeeee;
+    border-right: 1px solid #eeeeee;
+    height: 96px;
+    cursor: ew-resize; }
+  .player .add-comment-start-marker {
+    float: left; }
+  .player .add-comment-end-marker {
+    float: right; }
+  .player.big {
+    margin-bottom: 16px; }
+    .player.big .header {
+      margin-bottom: 9px; }
+      .player.big .header h2 {
+        font-size: 1.8em;
+        line-height: 31px;
+        margin: 0 15px 0 0; }
+        .player.big .header h2 a {
+          color: #333333; }
+        .player.big .header h2 a:hover {
+          text-decoration: none; }
+      .player.big .header .uploaded {
+        float: right;
+        color: #AAA;
+        font-size: .8em;
+        margin: 11px 8px 0 0; }
+      .player.big .header .checkbox {
+        margin: 10px 7px 0 0;
+        cursor: pointer; }
+      .player.big .header .version-dropdown {
+        margin-top: 6px; }
+    .player.big .waveform {
+      height: 96px;
+      background-size: 100% 100%;
+      background-repeat: no-repeat; }
+    .player.big .waveform-and-timeline-container {
+      position: relative;
+      height: 96px;
+      margin-bottom: 7px;
+      background: #F2F2F2;
+      border-radius: 3px; }
+    .player.big .waveform-mask {
+      -webkit-border-radius: 3px;
+      -webkit-border-bottom-left-radius: 0;
+      -moz-border-radius: 3px;
+      -moz-border-radius-bottomleft: 0;
+      border-radius: 3px;
+      border-bottom-left-radius: 0;
+      overflow: hidden;
+      -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC); }
+    .player.big .waveform-container {
+      height: 96px;
+      position: relative;
+      background: #F2F2F2;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px; }
+      .player.big .waveform-container .loading-container {
+        text-align: center;
+        height: 96px;
+        line-height: 96px;
+        font-size: .9em;
+        color: #AAA; }
+      .player.big .waveform-container .progress-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 96px;
+        background-color: rgba(255, 255, 255, 0.3); }
+    .player.big .progress-bar-time {
+      cursor: default;
+      top: 41.5px; }
+    .player.big .progress-bar-time::selection {
+      background-color: #000; }
+    .player.big .progress-bar-time::-moz-selection {
+      background-color: #000; }
+    .player.big .progress {
+      height: 20px;
+      top: 38px; }
+    .player.big .duration-time-bar {
+      display: none;
+      position: absolute;
+      width: 33px;
+      right: 0;
+      top: 41.5px;
+      font-size: .7em;
+      z-index: 10;
+      text-align: center;
+      height: 13px;
+      background: black;
+      color: #FFF;
+      line-height: 12px;
+      padding: 0 3px; }
+    .player.big .player-error-container {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      height: 96px;
+      line-height: 96px;
+      color: #AAA;
+      font-size: .9em; }
+
+.waveform-container::selection, .waveform-container::-moz-selection, .player::selection, .player::-moz-selection {
+  background-color: #FFF; }
+
+.tab-content .tab-pane {
+  margin-top: 13px; }

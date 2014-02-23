@@ -49,7 +49,14 @@ php artisan config:publish toddish/verify
 
 ### Configure
 
-Create config file ``app/config/packages/kyrst/base/config.php``:
+Run the following commands to move assets to ``/public`` and create configuration file:
+
+```
+php artisan asset:publish kyrst/base
+php artisan config:publish kyrst/base
+```
+
+The config file ``app/config/packages/kyrst/base/config.php`` will look like this by default:
 
 ```
 return array
@@ -59,16 +66,6 @@ return array
 	'PAGE_TITLE_APPENDIX' => 'Company Name',
 	'DEFAULT_META_DESCRIPTION' => 'Default meta description.'
 )
-```
-
-Move package assets to public:
-
-```
-php artisan asset:publish kyrst/base
-
-or maybe the following is better
-
-php artisan config:publish kyrst/base
 ```
 
 ### Migrate database
@@ -100,6 +97,10 @@ use Kyrst\Base\Models\User as KyrstUser;
 class User extends KyrstUser {
 ...
 ```
+
+### Change app/config/auth.php
+
+Change ``'model' => 'User',`` to ``'model' => 'Kyrst\Base\Models\User',``
 
 ## Includes
 
@@ -189,8 +190,8 @@ class HomeController extends BaseController
 
 		$this->display
 		(
-			'view.php',
-			'Page Title',
+			'view.php', // Defaults to NULL (Will automatically find the view file in `views/[layout]/[action].php`)
+			'Page Title', // Defaults to NULL
 			true, // Show page title appendix?
 			array // Libraries to load
 			(
@@ -263,23 +264,21 @@ $post = Input::all();
 
 if ( $this->is_ajax && $post )
 {
-	$ajax = new Ajax($this->notice);
-
 	$error = false;
 
 	if ( !$error )
 	{
-		$ajax->show_success('Success!'); // Opens an alert with Bootbox
-		$ajax->output();
+		$this->ajax->show_success('Success!'); // Opens an alert with Bootbox
+		$this->ajax->output();
 	}
 	else
 	{
-		$ajax->output_with_error('Error!'); // Opens an alert with Bootbox
+		$this->ajax->output_with_error('Error!'); // Opens an alert with Bootbox
 
 		// ... or ...
 
-		$ajax->add_error('Error!');
-		$ajax->output();
+		$this->ajax->add_error('Error!');
+		$this->ajax->output();
 	}
 }
 
@@ -369,7 +368,8 @@ $(function()
 		true, // Modal
 		false, // Resizable
 		false, // Draggable
-		[ // Buttons
+		// Buttons
+		[
 			{
 				title: 'Close',
 				close_on_click: true,
@@ -417,15 +417,11 @@ Use Helpers like this:
 
 ```php
 <?php
-use Kyrst\Base\Helpers\Ajax as Ajax;
+use Kyrst\Base\Helpers\Time as Time;
 
 ...
 
-$ajax = new Ajax($this->notice);
-
-// ... or ...
-
-$ajax = new Kyrst\Base\Helpers\Ajax($this->notice);
+$formatted_time = Time::format_seconds(30); // Outputs "00:30"
 ?>
 ```
 
@@ -469,3 +465,7 @@ For opening dialogs and showing success/error messages after redirect.
 - delete_session()
 - save_session()
 - output()
+
+## Need to be done
+
+- Support for XHR2 with class="kyrst-auto-submit" when enctype="multipart/form-data" is supplied

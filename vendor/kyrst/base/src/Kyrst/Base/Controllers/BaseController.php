@@ -29,17 +29,20 @@ class BaseController extends \Controller
 		'user_loaded' => array()
 	);
 
-	protected $user = NULL;
+	protected $user;
 
-	protected $ui = NULL;
+	protected $ui;
 
 	protected $is_ajax;
+	protected $ajax;
+
 	private $did_display = false;
 
 	private $is_from_controller;
 
 	protected $current_route_action = '';
 	protected $current_controller;
+	protected $current_action;
 	protected $current_page;
 
 	protected $root_dir;
@@ -93,6 +96,11 @@ class BaseController extends \Controller
 				{
 					$this->current_controller = $controller;
 				}
+
+				if ( isset($action) && $action !== NULL )
+				{
+					$this->current_action = $action;
+				}
 			}
 
 			$this->assign('current_controller', $this->current_controller, 'layout');
@@ -109,6 +117,12 @@ class BaseController extends \Controller
 
 			// UI
 			$this->ui = new UI();
+
+			// Ajax Helper
+			if ( $this->is_ajax )
+			{
+				$this->ajax = new Ajax($this->ui);
+			}
 
 			$this->current_page = $this->get_current_page();
 			$this->assign('current_page', $this->current_page, array('layout', 'content', 'js'));
@@ -159,19 +173,37 @@ class BaseController extends \Controller
 		$this->assets['js'][] = $js;
 	}
 
+	public function add_lib($lib_name, $css_files = NULL, $js_files = NULL, $dependencies = array())
+	{
+		$this->libs[$lib_name] = array
+		(
+			'css' => $css_files,
+			'js' => $js_files
+		);
+	}
+
 	public function load_lib($lib_name, $pre_loaded = true)
 	{
 		if ( !isset($this->libs[$lib_name]) )
 			throw new \Exception('Library "' . $lib_name . '" does not exist.');
 
 		$this->loaded_libs[$pre_loaded ? 'pre_loaded' : 'user_loaded'][] = $lib_name;
+
+		// Dependencies
+		if ( isset($this->libs[$lib_name]['dependencies']) && is_array($this->libs[$lib_name]['dependencies']) )
+		{
+			foreach ( $this->libs[$lib_name]['dependencies'] as $dependency_lib_name )
+			{
+				$this->load_lib($dependency_lib_name, true);
+			}
+		}
 	}
 
-	public function display($view_file = NULL, $page_title = '', $page_title_appendix = true, $libs_to_load = array())
+	public function display($view_file = NULL, $page_title = NULL, $page_title_appendix = true, $libs_to_load = array(), $css_to_load = NULL, $js_to_load = NULL)
 	{
 		$this->did_display = true;
 
-		$this->layout->page_title = ($page_title !== '') ? $page_title . ($page_title_appendix ? ' ' . \Config::get('base::PAGE_TITLE_SEPARATOR') . ' ' . \Config::get('base::PAGE_TITLE_APPENDIX') : '') : \Config::get('base::DEFAULT_PAGE_TITLE');
+		$this->layout->page_title = ($page_title !== NULL) ? $page_title . ($page_title_appendix ? ' ' . \Config::get('base::PAGE_TITLE_SEPARATOR') . ' ' . \Config::get('base::PAGE_TITLE_APPENDIX') : '') : \Config::get('base::DEFAULT_PAGE_TITLE');
 
 		$include_css = function($css)
 		{
@@ -241,6 +273,31 @@ class BaseController extends \Controller
 		if ( file_exists($js_layout_path) )
 			$this->add_js($js_layout_filename);
 
+		// Load display()-loaded JS and CSS
+		if ( is_array($css_to_load) )
+		{
+			foreach ( $css_to_load as $css_filename )
+			{
+				$include_css($css_filename);
+			}
+		}
+		else if ( $css_to_load !== NULL )
+		{
+			$include_css($css_to_load);
+		}
+
+		if ( is_array($js_to_load) )
+		{
+			foreach ( $js_to_load as $js_filename )
+			{
+				$include_js($js_filename);
+			}
+		}
+		else if ( $js_to_load !== NULL )
+		{
+			$include_js($js_to_load);
+		}
+
 		// Load based of /layout
 		if ( $this->is_from_controller )
 		{
@@ -274,11 +331,7 @@ class BaseController extends \Controller
 			$this->layout->$key = $value;
 		}
 
-		$content_data = array_merge
-		(
-			$this->data['content'],
-			array('js_vars' => $this->data['js'])
-		);
+		$content_data = $this->get_content_data();
 
 		// Automatically detect content view
 		if ( $view_file !== NULL )
@@ -304,6 +357,15 @@ class BaseController extends \Controller
 
 		return $this->layout
 			->nest('content', $route, $content_data);
+	}
+
+	public function get_content_data()
+	{
+		return array_merge
+		(
+			$this->data['content'],
+			array('js_vars' => $this->data['js'])
+		);
 	}
 
 	private function get_current_page()

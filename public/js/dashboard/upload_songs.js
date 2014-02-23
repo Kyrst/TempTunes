@@ -1,5 +1,10 @@
 $(function()
 {
+	_.templateSettings =
+	{
+		interpolate: /\{\{(.+?)\}\}/g
+	};
+
 	$('#files_input').on('change', function()
 	{
 		var $this = $(this),
@@ -24,7 +29,16 @@ $(function()
 					break;
 				}
 
-				$('#upload_progress_items').prepend('<div id="upload_item_' + i + '" class="upload-item"><span class="upload-item-title">' + file.name + '</span><progress id="' + progress_bar_selector + '" class="upload-item-progress-bar"></progress><span id="upload_item_progress_status_' + i + '" class="upload-item-progress-status">0%</span><div class="clear"></div><ul id="upload_item_progress_buttons_' + i + '" class="upload-item-progress-buttons"><li><a href="javascript:" id="upload_item_cancel_button_' + i + '" data-index="' + i + '">Cancel</a></li></ul><div id="upload_item_status_' + i + '" class="upload-item-status"></div></p>');
+				//$('#upload_progress_items').prepend('<div id="upload_item_' + i + '" class="upload-item"><span class="upload-item-title">' + file.name + '</span><progress id="' + progress_bar_selector + '" class="upload-item-progress-bar"></progress><span id="upload_item_progress_status_' + i + '" class="upload-item-progress-status">0%</span><div class="clear"></div><ul id="upload_item_progress_buttons_' + i + '" class="upload-item-progress-buttons"><li><a href="javascript:" id="upload_item_cancel_button_' + i + '" data-index="' + i + '">Cancel</a></li></ul><div id="upload_item_status_' + i + '" class="upload-item-status"></div></div>');
+
+				var upload_progress_item_html = _.template($('#upload_item_template').html(),
+				{
+					index: i,
+					name: file.name,
+					progress_bar_selector: progress_bar_selector
+				});
+
+				$('#upload_progress_items').prepend(upload_progress_item_html);
 
 				if ( !$kyrst.in_array(file.type, allowed_file_types) /* && file.size <= $id("MAX_FILE_SIZE").value*/ )
 				{
@@ -74,15 +88,24 @@ $(function()
 					};
 				}(progress_bar_selector, i));
 
-				(function(i, is_last)
+				(function(i, is_last, progress_bar_selector)
 				{
 					xhr.onload = function(result) // Upload complete
 					{
 						$('#upload_item_cancel_button_' + i).hide();
 
 						$('#upload_item_progress_buttons_' + i).hide();
-						$('#upload_item_status_' + i).html('Done...').addClass('success').show();
-						$('#upload_item_' + i).fadeOut(function()
+						$('#upload_item_status_' + i).hide();//html('Done...').addClass('success').show();
+
+						$('#max_upload_size_text').fadeOut('fast');
+
+						$('#' + progress_bar_selector).fadeOut('fast');
+						$('#upload_item_progress_status_' + i).fadeOut('fast', function()
+						{
+							$('#upload_item_done_container_' + i).fadeIn();
+						});
+
+						/*$('#upload_item_' + i).fadeOut(function()
 						{
 							if ( is_last )
 							{
@@ -91,9 +114,9 @@ $(function()
 									//$kyrst.redirect(BASE_URL + 'dashboard/my-songs');
 								});
 							}
-						});
+						});*/
 					};
-				}(i, is_last));
+				}(i, is_last, progress_bar_selector));
 
 				var form = new FormData();
 				form.append('song_id', current_song_id);

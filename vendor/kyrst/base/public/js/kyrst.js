@@ -15,7 +15,8 @@ Kyrst.prototype =
 		this.binds();
 
 		// Helper
-		//this.helper = new helper();
+		this.helper = new helper();
+		this.helper.init();
 
 		// AJAX
 		this.ajax = new ajax();
@@ -124,6 +125,29 @@ Kyrst.prototype =
 	log: function(message)
 	{
 		window.console && console.log(message);
+	},
+
+	size: function(object)
+	{
+		var size = 0,
+			key;
+
+		for ( key in object )
+		{
+			if ( object.hasOwnProperty(key) )
+			{
+				size++;
+			}
+		}
+
+		return size;
+	},
+
+	is_email: function(str)
+	{
+		var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+		return !this.is_empty(str) && regex.test(str);
 	},
 
 	var_dump: function(array, return_val)

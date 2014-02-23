@@ -26,6 +26,8 @@
 			</div>
 		</div>
 
+		<div id="mask"></div>
+
 		<?= $js_vars ?>
 
 		<?php foreach ( $assets['js'] as $file ): ?>

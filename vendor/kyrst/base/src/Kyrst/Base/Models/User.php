@@ -10,14 +10,30 @@ use Toddish\Verify\UserNotFoundException as UserNotFoundException;
 
 class User extends VerifyUser
 {
-	public static function register($email, $password, $first_name = '', $last_name = '')
+	const RANDOM_PASSWORD_LENGTH = 8;
+
+	public static function register($email, $username = NULL, $password = NULL, $first_name = '', $last_name = '')
 	{
 		$email = trim($email);
 		$password = trim($password);
 
 		$user = new User;
+
+		if ( $username !== NULL )
+		{
+			$user->username = $username;
+			$user->slug = \Str::slug($username);
+		}
+
 		$user->email = $email;
+
+		if ( $password === NULL )
+		{
+			$password = str_random(self::RANDOM_PASSWORD_LENGTH);
+		}
+
 		$user->password = $password;
+
 		$user->first_name = trim($first_name);
 		$user->last_name = trim($last_name);
 		$user->verified = 1;

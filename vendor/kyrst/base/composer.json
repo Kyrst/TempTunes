@@ -10,7 +10,8 @@
     ],
     "require": {
         "php": ">=5.3.0",
-		"toddish/verify": "2.2.*"
+		"toddish/verify": "2.*",
+		"twitter/bootstrap": "dev-master"
     },
     "autoload": {
         "classmap": [

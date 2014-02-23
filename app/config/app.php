@@ -65,7 +65,7 @@ return array(
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'Ye4iJQHzL1kcchibnSSrqXhbWYofCVKc',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -108,6 +108,8 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		'Toddish\Verify\VerifyServiceProvider',
+
+		'Intervention\Image\ImageServiceProvider',
 
 		'Kyrst\Base\BaseServiceProvider'
 	),
@@ -176,6 +178,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 
+		'Image'           => 'Intervention\Image\Facades\Image'
 	),
 
 );
