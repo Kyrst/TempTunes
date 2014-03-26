@@ -69,8 +69,6 @@ class ApplicationController extends BaseController
 		}
 
 		$this->load_lib('kyrst');
-
-		$this->add_js('js/global.js');
 	}
 
 	public function index()
