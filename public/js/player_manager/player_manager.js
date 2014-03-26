@@ -33,7 +33,8 @@ PlayerManager.prototype =
 
 	binds: function()
 	{
-		var inst = this;
+		var inst = this,
+			detected_player_size = null;
 
 		// Look for players
 		$('.player').each(function(i, $element)
@@ -42,7 +43,9 @@ PlayerManager.prototype =
 				song_version_id = $(this).data('song_version_id'),
 				size = $(this).data('size');
 
-			// Change tab to when initing
+			detected_player_size = size;
+
+			// If song_page player, change tab to current player when initializing since it can't figure out the sizes otherwise
 			if ( size === 'song_page' )
 			{
 				$('#versions_tab').find('a[href="#tab_' + song_version_id + '"]').tab('show');
@@ -50,6 +53,12 @@ PlayerManager.prototype =
 
 			init_player($(this));
 		});
+
+		// If song_player player, go back to first tab when done
+		if ( detected_player_size === 'song_page' )
+		{
+			$('#versions_tab').find('a:first').tab('show');
+		}
 
 		function init_player($player)
 		{
@@ -232,8 +241,6 @@ PlayerManager.prototype =
 								$('#comment_hover_' + id).css('width', Math.round(position_in_seconds_to_px(end_position_in_seconds) - start_position_in_px) + 'px');
 							}
 
-							console.log('comment_id: ' + id + ' start_position_in_seconds: ' + start_position_in_seconds + ' start_position_in_px: ' + start_position_in_px + ' duration_in_seconds: ' + duration_in_seconds + ' waveform_container_width: ' + waveform_container_width);
-
 							$comment.css('left', start_position_in_px);
 							$comment_data.css('left', start_position_in_px + $comment.width());
 
@@ -413,6 +420,14 @@ PlayerManager.prototype =
 
 					function comment_bind($comment)
 					{
+						var comment_id = $comment.data('comment_id');
+
+						$('#comment_data_' + comment_id).on('mouseover', function()
+						{
+						}).on('mouseout', function()
+						{
+						});
+
 						// Comment bind
 						$comment.on('mouseover', function()
 						{
