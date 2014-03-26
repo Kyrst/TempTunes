@@ -10,7 +10,7 @@
 			<a href="<?= URL::route('home') ?>" class="navbar-brand">TempTunes</a>
 		</div>
 
-		<div class="navbar-collapse collapse">
+		<div class="navbar-collapse collapse" style="position:relative">
 			<!-- Logged in -->
 			<?php if ( $user !== NULL ): ?>
 				<div id="header_user_nav" class="pull-right">

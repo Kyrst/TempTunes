@@ -1,23 +1,23 @@
 [
     {
         "name": "toddish/verify",
-        "version": "v2.3.0",
-        "version_normalized": "2.3.0.0",
+        "version": "v2.3.1",
+        "version_normalized": "2.3.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Toddish/Verify-L4.git",
-            "reference": "378e67a0faa92bb7eefc4127059d28bef6edac70"
+            "reference": "b3025c72bdf4e0f33aa0781ac8eab2053729c5dd"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Toddish/Verify-L4/zipball/378e67a0faa92bb7eefc4127059d28bef6edac70",
-            "reference": "378e67a0faa92bb7eefc4127059d28bef6edac70",
+            "url": "https://api.github.com/repos/Toddish/Verify-L4/zipball/b3025c72bdf4e0f33aa0781ac8eab2053729c5dd",
+            "reference": "b3025c72bdf4e0f33aa0781ac8eab2053729c5dd",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2014-01-20 21:35:07",
+        "time": "2014-02-24 13:14:57",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -57,15 +57,15 @@
         "source": {
             "type": "git",
             "url": "https://github.com/twbs/bootstrap.git",
-            "reference": "d675284cf65b0b1c30ed555f3148dd880a52da27"
+            "reference": "901f358d16fb4911141f56f3b8806a367b8454b7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d675284cf65b0b1c30ed555f3148dd880a52da27",
-            "reference": "d675284cf65b0b1c30ed555f3148dd880a52da27",
+            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/901f358d16fb4911141f56f3b8806a367b8454b7",
+            "reference": "901f358d16fb4911141f56f3b8806a367b8454b7",
             "shasum": ""
         },
-        "time": "2014-02-03 10:38:18",
+        "time": "2014-03-07 07:58:04",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -87,11 +87,17 @@
                 "email": "markdotto@gmail.com"
             }
         ],
-        "description": "Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.",
+        "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
         "homepage": "http://getbootstrap.com",
         "keywords": [
-            "bootstrap",
-            "css"
+            "JS",
+            "css",
+            "framework",
+            "front-end",
+            "less",
+            "mobile-first",
+            "responsive",
+            "web"
         ]
     }
 ]

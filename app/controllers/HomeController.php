@@ -29,7 +29,7 @@ class HomeController extends BaseController
 				$this->ajax->add_error('Error.');
 			}
 
-			$this->ajax->output();
+			return $this->ajax->output();
 		}
 
 		$this->display();

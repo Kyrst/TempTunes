@@ -17,14 +17,14 @@ class AjaxController extends BaseController
 
 		try
 		{
-			$song_version = Song_Upload::find($song_version_id)->firstOrFail();
+			$song_version = Song_Version::find($song_version_id)->firstOrFail();
 		}
 		catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
 		{
-			$this->ajax->output_with_error('SONG_VERSION_NOT_FOUND');
+			return $this->ajax->output_with_error('SONG_VERSION_NOT_FOUND');
 		}
 
-		$song_version_comment = new Song_Upload_Comment();
+		$song_version_comment = new Song_Version_Comment();
 		$song_version_comment->song_version_id = $song_version_id;
 		$song_version_comment->user_id = $this->user->id;
 		$song_version_comment->comment = trim($input['comment']);
@@ -35,7 +35,8 @@ class AjaxController extends BaseController
 		$this->ajax->add_data('comment_id', $song_version_comment->id);
 		$this->ajax->add_data('comment', $song_version_comment->comment);
 		$this->ajax->add_data('comment_hover_html', $song_version_comment->get_hover_html());
+		$this->ajax->add_data('user_photo_url', $song_version_comment->user->get_photo_url(User::PHOTO_SIZE_WAVEFORM_COMMENT));
 
-		$this->ajax->output();
+		return $this->ajax->output();
 	}
 }

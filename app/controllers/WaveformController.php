@@ -3,6 +3,11 @@ class WaveformController extends BaseController
 {
 	public function render($user_id, $song_id, $version, $size)
 	{
+		if ( $size === Song::PLAYER_SIZE_SONG_PAGE )
+		{
+			$size = 'big';
+		}
+
 		$waveform_image_path = User::get_songs_dir($user_id, $song_id, $version) . 'waveform_images/' . $size . '.png';
 
 		if ( !file_exists($waveform_image_path) )

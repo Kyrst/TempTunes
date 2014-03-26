@@ -36,13 +36,14 @@
 				</div>
 
 				<div id="player_waveform_background_<?= $identifier ?>" class="waveform-background">
-				<div id="player_waveform_<?= $identifier ?>" class="waveform" style="background-image:url('<?= URL::to('waveform/' . $user_id . '/' . $song->id . '/v' . $song->version . '/' . $size) ?>')"></div>
+					<div id="player_progress_container_<?= $identifier ?>" class="progress-container"></div>
 
-				<div id="player_progress_container_<?= $identifier ?>" class="progress-container"></div>
+					<div id="player_waveform_<?= $identifier ?>" class="waveform" style="background-image:url('<?= $song_version->get_waveform_image($size) ?>')"></div>
+				</div>
 
 				<div id="progress_bar_time_<?= $identifier ?>" class="progress-bar-time">00:00</div>
 
-				<div id="duration_time_bar_<?= $identifier ?>" class="duration-time-bar">10:00</div>
+				<div id="duration_time_bar_<?= $identifier ?>" class="duration-time-bar"></div>
 			</div>
 		<!--</div>-->
 
@@ -58,7 +59,7 @@
 		<!-- Comments -->
 		<div id="comments_container_<?= $identifier ?>" class="comments-container">
 			<?php foreach ( $song_version->comments as $comment ): ?>
-				<div id="comment_<?= $comment->id ?>" class="comment" data-id="<?= $comment->id ?>" data-from_seconds="<?= $comment->from_seconds ?>" data-to_seconds="<?= $comment->to_seconds !== NULL ? $comment->to_seconds : '' ?>" style="background:url(<?= $comment->user->get_photo_url(User::PHOTO_SIZE_WAVEFORM_COMMENT) ?>)">
+				<div id="comment_<?= $comment->id ?>" class="comment" data-comment_id="<?= $comment->id ?>" data-from_seconds="<?= $comment->from_seconds ?>" data-to_seconds="<?= $comment->to_seconds !== NULL ? $comment->to_seconds : '' ?>" style="background:#FFF url(<?= $comment->user->get_photo_url(User::PHOTO_SIZE_WAVEFORM_COMMENT) ?>)">
 					<div id="comment_hover_<?= $comment->id ?>" class="comment-hover" data-is_open="no"></div>
 				</div>
 

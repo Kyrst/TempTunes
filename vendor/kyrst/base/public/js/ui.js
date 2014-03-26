@@ -118,7 +118,7 @@ ui.prototype =
 			};
 		}
 
-		var loader_height = (height - 122);
+		var loader_height = (height - 133);
 
 		// Create
 		if ( !$kyrst.exists($(selector)) && $kyrst.is_undefined(dialog_id) )
@@ -327,7 +327,7 @@ ui.prototype =
 			buttons.push(
 			{
 				label: (!$kyrst.is_undefined(extra) && !$kyrst.is_undefined(extra.confirm_button_text) ? extra.confirm_button_text : 'Confirm'),
-				class: 'blue',
+				className: 'btn-primary',
 				callback: function()
 				{
 					extra.confirm_callback();
@@ -335,7 +335,7 @@ ui.prototype =
 			},
 			{
 				label: (!$kyrst.is_undefined(extra) && !$kyrst.is_undefined(extra.cancel_button_text) ? extra.cancel_button_text : 'Cancel'),
-				class: 'default',
+				className: 'btn-default',
 				callback: function()
 				{
 					if ( $kyrst.is_function(cancel_callback) )
@@ -705,8 +705,7 @@ ui.prototype =
 
 			button.set_title = function(title, disable)
 			{
-				//$(this.selector).text(title);
-				$(this.selector + ' .ui-button-text').text(title);
+				$(this.selector).text(title);
 
 				this.selector = '.ui-dialog-buttonpane button:contains(' + title + ')';
 

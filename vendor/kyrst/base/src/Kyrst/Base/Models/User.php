@@ -12,6 +12,8 @@ class User extends VerifyUser
 {
 	const RANDOM_PASSWORD_LENGTH = 8;
 
+	protected $hidden = array('password');
+
 	public static function register($email, $username = NULL, $password = NULL, $first_name = '', $last_name = '')
 	{
 		$email = trim($email);
@@ -73,5 +75,15 @@ class User extends VerifyUser
 	public function get_name()
 	{
 		return $this->first_name . ' ' . $this->last_name;
+	}
+
+	public function getAuthIdentifier()
+	{
+		return $this->getKey();
+	}
+
+	public function getAuthPassword()
+	{
+		return $this->password;
 	}
 }

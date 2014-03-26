@@ -61,6 +61,56 @@ or wrap each row of columns in a <div class="row"> */
 	height: 0;
 }
 
+#header_player_container
+{
+	position: absolute;
+	right: 260px;
+	top: 18px;
+	font-size: .8em
+}
+
+#header_player_title, #header_player_time
+{
+	color: #CCC;
+}
+
+#volume_control_container
+{
+	float: right;
+	width: auto;
+	margin: 15px 15px 0 0;
+}
+
+#volume_control
+{
+	width: 100px;
+	-webkit-appearance: none;
+	-moz-apperance: none;
+	border-radius: 1px;
+	height: 7px;
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		right top,
+		color-stop(.15, #62B2E8),
+		color-stop(.15, #386F8A)
+	);
+}
+
+#volume_control:focus
+{
+	outline: none
+}
+
+#volume_control::-webkit-slider-thumb
+{
+	-webkit-appearance: none !important;
+	background-color: #E9E9E9;
+	border-radius: 1px;
+	height: 12px;
+	width: 12px;
+}
+
 /* Player */
 .player
 {
@@ -74,7 +124,12 @@ or wrap each row of columns in a <div class="row"> */
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: linear-gradient(to bottom,  #7d7e7d 0%,#0e0e0e 100%);
+		//background: linear-gradient(to bottom,  #7D7E7D 0%, #0E0E0E 100%);
+	}
+
+	.waveform-background.loaded
+	{
+		background: linear-gradient(to bottom,  #7D7E7D 0%, #0E0E0E 100%);
 	}
 
 	.waveform
@@ -147,8 +202,8 @@ or wrap each row of columns in a <div class="row"> */
 		position: absolute;
 		width: $comment_bubble_width;
 		height: $comment_bubble_height;
-		top: 150px;
-		left: 180px;
+		top: $player_big_waveform_height + 8px;
+		left: 175px;
 		background-color: #FFF;
 		border: 1px solid $comment_bubble_border_colors;
 		border-radius: 3px;
@@ -214,15 +269,16 @@ or wrap each row of columns in a <div class="row"> */
 		left: 0;
 		width: 100%;
 		z-index: 190;
+		background-color: rgba(255, 255, 255, .4);
 
-		$comment_height: 14px;
+		$comment_height: 20px;
 
 		.comment
 		{
 			position: absolute;
 			left: 0;
 			top: 0;
-			width: 14px;
+			width: 20px;
 			height: $comment_height;
 			cursor: pointer;
 			background: #555;
@@ -235,10 +291,11 @@ or wrap each row of columns in a <div class="row"> */
 				position: absolute;
 				left: 0;
 				//top: -$comment_hover_height;
-				top: -$player_big_waveform_height;
-				height: $player_big_waveform_height;
+				top: -$player_big_waveform_height + $comment_height;
+				height: $player_big_waveform_height - $comment_height;
 				//background: rgba(255, 255, 255, 0.3);
-				background-color: rgba(0, 0, 0, .2);
+				//background-color: rgba(0, 0, 0, .2);
+				background-color: rgba(255, 255, 255, 0.6);
 				//background-color: $purple_transparent;
 				font-size: .8em;
 				cursor: default;
@@ -293,7 +350,7 @@ or wrap each row of columns in a <div class="row"> */
 	}
 
 	// Big
-	&.big
+	&.big, &.song_page
 	{
 		margin-bottom: 16px;
 
@@ -372,7 +429,7 @@ or wrap each row of columns in a <div class="row"> */
 			position: relative;
 			background: #F2F2F2;
 			border-radius: 3px;
-			overflow: hidden;
+			//overflow: hidden;
 			margin-bottom: 8px;
 
 			.loading-container
@@ -390,7 +447,7 @@ or wrap each row of columns in a <div class="row"> */
 				top: 0;
 				left: 0;
 				height: $player_big_waveform_height;
-				background-color: rgba(255, 255, 255, .3);
+				background: linear-gradient(to bottom, #62B2E8 0%, #386F8A 100%);
 			}
 		}
 

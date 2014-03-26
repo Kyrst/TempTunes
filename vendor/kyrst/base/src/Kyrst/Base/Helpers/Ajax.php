@@ -81,15 +81,19 @@ class Ajax
 		{
 			// On AJAX redirect, send the success and error messages to UI to display after page load
 			foreach ( $this->data['successes'] as $success )
+			{
 				$this->ui->add_success($success);
+			}
 
 			foreach ( $this->data['errors'] as $success )
+			{
 				$this->ui->add_error($success);
+			}
 
 			$this->ui->save_session();
 		}
 
-		die(json_encode($this->data));
+		return \Response::json($this->data);
 	}
 
 	public function get_output()

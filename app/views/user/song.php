@@ -17,25 +17,7 @@
 <div id="versions_tab_content" class="tab-content">
 	<?php foreach ( $song_versions as $i => $song_version ): ?>
 		<div id="tab_<?= $song_version->id ?>" class="tab-pane<?php if ( $i === 0 ): ?> active<?php endif ?>">
-
-			<div id="waveform_container_<?= $song_version->id ?>" class="waveform-container">
-				<div id="waveform_<?= $song_version->id ?>" class="waveform">
-					<div id="progress_bar_<?= $song_version->id ?>" class="progress progress-striped active">
-						<div class="progress-bar progress-bar-info"></div>
-					</div>
-				</div>
-
-				<div id="wave_timeline_<?= $song_version->id ?>"></div>
-			</div>
-
-			<div id="song_buttons_container_<?= $song_version->id ?>" class="song-buttons-container clearfix">
-				<a href="javascript:" data-song_version_id="<?= $song_version->id ?>" id="play_button_<?= $song_version->id ?>" class="play-button btn btn-primary btn-sm pull-left disabled">Play</a>
-				<a href="javascript:" data-song_version_id="<?= $song_version->id ?>" id="pause_button_<?= $song_version->id ?>" class="pause-button btn btn-primary btn-sm pull-left">Pause</a>
-				<a href="javascript:" data-song_version_id="<?= $song_version->id ?>" id="stop_button_<?= $song_version->id ?>" class="stop-button btn btn-primary btn-sm pull-left disabled">Stop</a>
-			</div>
-
-			<div id="song_error_container_<?= $song_version->id ?>" class="song-error-container"></div>
-
+			<?= $song->print_player(Song::PLAYER_SIZE_SONG_PAGE, $song_version->id) ?>
 		</div>
 	<?php endforeach ?>
 </div>

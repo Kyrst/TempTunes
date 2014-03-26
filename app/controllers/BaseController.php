@@ -9,6 +9,11 @@ class BaseController extends ApplicationController
 	{
 		parent::__construct();
 
+		$this->libs['jquery.cookie'] = array
+		(
+			'js' => 'libs/jquery.cookie/jquery.cookie.js'
+		);
+
 		$this->libs['underscore'] = array
 		(
 			'js' => 'libs/underscore/underscore.js'
@@ -51,6 +56,7 @@ class BaseController extends ApplicationController
 			)
 		);*/
 
+		$this->load_lib('jquery.cookie');
 		$this->load_lib('underscore');
 		$this->load_lib('buzz');
 		//$this->load_lib('wavesurfer');
@@ -65,6 +71,18 @@ class BaseController extends ApplicationController
 
 		$this->add_css('css/global.css');
 
+		// Volume
+		if ( isset($_COOKIE['volume']) )
+		{
+			$volume = $_COOKIE['volume'];
+		}
+		else
+		{
+			$volume = Cookie::get('audio.DEFAULT_VOLUME');
+		}
+
+		$this->assign('volume', $volume, 'js');
+
 		// Add header view if Home or Dashboard layout
 		if ( in_array($this->current_controller, array('home', 'user', 'song', 'dashboard')) )
 		{
@@ -76,7 +94,7 @@ class BaseController extends ApplicationController
 			$header_view = View::make('layouts/partials/header');
 			$header_view->user = $this->user;
 			$header_view->num_songs = $this->num_songs;
-			$header_view->header_player_html = View::make('partials/player/header')->render();
+			$header_view->header_player_html = View::make('partials/player/header')->with('volume', $volume)->render();
 
 			$this->assign('header_html', $header_view->render(), 'layout');
 

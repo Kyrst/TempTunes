@@ -5,6 +5,7 @@ class Song extends Eloquent
 	const URL_EDIT = 'edit';
 
 	const PLAYER_SIZE_BIG = 'big';
+	const PLAYER_SIZE_SONG_PAGE = 'song_page';
 
 	const PLAYER_OPTION_SHOW_VERSIONS = 1;
 	const PLAYER_OPTION_VERSIONS_MODE_DROPDOWN = 2;
@@ -85,7 +86,7 @@ class Song extends Eloquent
 
 	public function print_player($size, $song_version_id = NULL, $options = array())
 	{
-		if ( !in_array($size, array(self::PLAYER_SIZE_BIG)) )
+		if ( !in_array($size, array(self::PLAYER_SIZE_BIG, self::PLAYER_SIZE_SONG_PAGE)) )
 		{
 			throw new Exception('Invalid size "' . $size . '".');
 		}
@@ -114,6 +115,6 @@ class Song extends Eloquent
 		$player_view->size = $size;
 		$player_view->user_id = $song_version->song->user_id;
 
-		echo $player_view->render();
+		return $player_view->render();
 	}
 }

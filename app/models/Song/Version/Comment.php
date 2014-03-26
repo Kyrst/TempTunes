@@ -23,6 +23,7 @@ class Song_Version_Comment extends Eloquent
 	public function get_hover_html()
 	{
 		$comment_hover_view = View::make('partials/player/comment_hover');
+		$comment_hover_view->user_username = $this->user->username;
 		$comment_hover_view->comment = nl2br($this->comment);
 		$comment_hover_view->from_seconds = Time::format_seconds($this->from_seconds);
 		$comment_hover_view->to_seconds = $this->to_seconds !== NULL ? Time::format_seconds($this->to_seconds) : NULL;

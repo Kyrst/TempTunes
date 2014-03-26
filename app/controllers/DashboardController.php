@@ -46,7 +46,7 @@ class DashboardController extends BaseController
 		$this->user->save();
 
 		$this->ajax->add_success('Settings successfully saved.');
-		$this->ajax->output();
+		return $this->ajax->output();
 	}
 
 	public function upload_photo()
@@ -98,11 +98,11 @@ class DashboardController extends BaseController
 
 		try
 		{
-			$song_version = song_version::find($song_version_id)->firstOrFail();
+			$song_version = song_version::where('id', $song_version_id)->firstOrFail();
 		}
 		catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
 		{
-			$this->ajax->output_with_error('Version not found.');
+			return $this->ajax->output_with_error('Version not found.');
 		}
 
 		$this->ajax->add_data
@@ -112,11 +112,16 @@ class DashboardController extends BaseController
 			(
 				'title' => $song_version->title,
 				'filename' => $song_version->get_filename(),
-				'route' => $song_version->get_route()
+				'route' => $song_version->get_route(),
+				'waveform_image' => $song_version->get_waveform_image('big'),
+				'mp3_route' => $song_version->get_route('mp3'),
+				'wav_route' => $song_version->get_route('wav')
 			)
 		);
 
-		$this->ajax->output();
+		$this->ajax->add_data('player_html', $song_version->song->print_player(Song::PLAYER_SIZE_BIG, $song_version->id));
+
+		return $this->ajax->output();
 	}
 
 	public function upload_songs($song_id = null)
@@ -127,7 +132,7 @@ class DashboardController extends BaseController
 		{
 			try
 			{
-				$song = Song::find($song_id)->firstOrFail();
+				$song = Song::where('id', $song_id)->firstOrFail();
 			}
 			catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
 			{
@@ -159,6 +164,7 @@ class DashboardController extends BaseController
 		$extension = $input['file']->getClientOriginalExtension();
 
 		$original_filename = $input['file']->getClientOriginalName();
+		$original_filename_without_extension = basename($original_filename);
 
 		// Database
 		if ( filter_var($input['song_id'], FILTER_VALIDATE_INT) && $input['song_id'] > 0 ) // Upload new version
@@ -173,7 +179,7 @@ class DashboardController extends BaseController
 			$song->user_id = $this->user->id;
 			$song->original_filename = $original_filename;
 			$song->title = $original_filename;
-			$song->slug = Str::slug($original_filename);
+			$song->slug = Str::slug($original_filename_without_extension);
 			$song->version = 1;
 			$song->save();
 		}
@@ -235,7 +241,7 @@ class DashboardController extends BaseController
 
 		foreach ( $sizes as $size_name => $size )
 		{
-			$generate_waveform_cmd = Config::get('audio.waveform') . ' ' . $wav_filepath . ' ' . $waveform_images_dir . $size_name . '.png -W' . $size['width'] . ' -H' . $size['height'] . ' -b#FFFFFF -ctransparent ' . Config::get('audio.STDOUT');
+			$generate_waveform_cmd = Config::get('audio.WAVEFORM') . ' ' . $wav_filepath . ' ' . $waveform_images_dir . $size_name . '.png -W' . $size['width'] . ' -H' . $size['height'] . ' -b#FFFFFF -ctransparent ' . Config::get('audio.STDOUT');
 
 			exec($generate_waveform_cmd, $result);
 		}
@@ -271,7 +277,7 @@ class DashboardController extends BaseController
 		}
 		catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
 		{
-			$this->ajax->output_with_error('Could not find song.');
+			return $this->ajax->output_with_error('Could not find song.');
 		}
 
 		song_version::where('song_id', $song->id)->delete();
@@ -281,7 +287,7 @@ class DashboardController extends BaseController
 		// Delete files
 		Kyrst\Base\Helpers\File::remove_dir($song->get_dir());
 
-		$this->ajax->output();
+		return $this->ajax->output();
 	}
 
 	public function edit_song($song_slug)
@@ -307,11 +313,11 @@ class DashboardController extends BaseController
 				$song->description = trim($input['description']);
 				$song->save();
 
-				$this->ajax->output();
+				return $this->ajax->output();
 			}
 			else
 			{
-				$this->ajax->output_with_error('NO_POST');
+				return $this->ajax->output_with_error('NO_POST');
 			}
 		}
 
@@ -331,6 +337,6 @@ class DashboardController extends BaseController
 		$this->user->photo = 'no';
 		$this->user->save();
 
-		$this->ajax->output();
+		return $this->ajax->output();
 	}
 }

@@ -27,4 +27,9 @@ class Song_Version extends Eloquent
 	{
 		return URL::to('play/' . $this->song->user_id . '/' . $this->song_id . '/v' . $this->version) . ($file_extension === 'wav' ? '/1' : '');
 	}
+
+	public function get_waveform_image($size)
+	{
+		return URL::to('waveform/' . $this->song->user_id . '/' . $this->song_id . '/v' . $this->version . '/' . $size);
+	}
 }

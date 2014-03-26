@@ -44,6 +44,38 @@ or wrap each row of columns in a <div class="row"> */
   width: 0;
   height: 0; }
 
+#header_player_container {
+  position: absolute;
+  right: 260px;
+  top: 18px;
+  font-size: 0.8em; }
+
+#header_player_title, #header_player_time {
+  color: #CCC; }
+
+#volume_control_container {
+  float: right;
+  width: auto;
+  margin: 15px 15px 0 0; }
+
+#volume_control {
+  width: 100px;
+  -webkit-appearance: none;
+  -moz-apperance: none;
+  border-radius: 1px;
+  height: 7px;
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0.15, #62b2e8), color-stop(0.15, #386f8a)); }
+
+#volume_control:focus {
+  outline: none; }
+
+#volume_control::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  background-color: #E9E9E9;
+  border-radius: 1px;
+  height: 12px;
+  width: 12px; }
+
 /* Player */
 .player {
   position: relative; }
@@ -53,7 +85,8 @@ or wrap each row of columns in a <div class="row"> */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100%; }
+  .player .waveform-background.loaded {
     background: linear-gradient(to bottom, #7d7e7d 0%, #0e0e0e 100%); }
   .player .waveform {
     display: none;
@@ -96,8 +129,8 @@ or wrap each row of columns in a <div class="row"> */
     position: absolute;
     width: 300px;
     height: 110px;
-    top: 150px;
-    left: 180px;
+    top: 104px;
+    left: 175px;
     background-color: #FFF;
     border: 1px solid #cccccc;
     border-radius: 3px;
@@ -141,22 +174,23 @@ or wrap each row of columns in a <div class="row"> */
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 190; }
+    z-index: 190;
+    background-color: rgba(255, 255, 255, 0.4); }
     .player .comments-container .comment {
       position: absolute;
       left: 0;
       top: 0;
-      width: 14px;
-      height: 14px;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
       background: #555; }
       .player .comments-container .comment .comment-hover {
         display: none;
         position: absolute;
         left: 0;
-        top: -96px;
-        height: 96px;
-        background-color: rgba(0, 0, 0, 0.2);
+        top: -76px;
+        height: 76px;
+        background-color: rgba(255, 255, 255, 0.6);
         font-size: .8em;
         cursor: default; }
     .player .comments-container .comment-data {
@@ -185,39 +219,39 @@ or wrap each row of columns in a <div class="row"> */
     float: left; }
   .player .add-comment-end-marker {
     float: right; }
-  .player.big {
+  .player.big, .player.song_page {
     margin-bottom: 16px; }
-    .player.big .header {
+    .player.big .header, .player.song_page .header {
       margin-bottom: 9px; }
-      .player.big .header h2 {
+      .player.big .header h2, .player.song_page .header h2 {
         font-size: 1.8em;
         line-height: 31px;
         margin: 0 15px 0 0; }
-        .player.big .header h2 a {
+        .player.big .header h2 a, .player.song_page .header h2 a {
           color: #333333; }
-        .player.big .header h2 a:hover {
+        .player.big .header h2 a:hover, .player.song_page .header h2 a:hover {
           text-decoration: none; }
-      .player.big .header .uploaded {
+      .player.big .header .uploaded, .player.song_page .header .uploaded {
         float: right;
         color: #AAA;
         font-size: .8em;
         margin: 11px 8px 0 0; }
-      .player.big .header .checkbox {
+      .player.big .header .checkbox, .player.song_page .header .checkbox {
         margin: 10px 7px 0 0;
         cursor: pointer; }
-      .player.big .header .version-dropdown {
+      .player.big .header .version-dropdown, .player.song_page .header .version-dropdown {
         margin-top: 6px; }
-    .player.big .waveform {
+    .player.big .waveform, .player.song_page .waveform {
       height: 96px;
       background-size: 100% 100%;
       background-repeat: no-repeat; }
-    .player.big .waveform-and-timeline-container {
+    .player.big .waveform-and-timeline-container, .player.song_page .waveform-and-timeline-container {
       position: relative;
       height: 96px;
       margin-bottom: 7px;
       background: #F2F2F2;
       border-radius: 3px; }
-    .player.big .waveform-mask {
+    .player.big .waveform-mask, .player.song_page .waveform-mask {
       -webkit-border-radius: 3px;
       -webkit-border-bottom-left-radius: 0;
       -moz-border-radius: 3px;
@@ -226,36 +260,35 @@ or wrap each row of columns in a <div class="row"> */
       border-bottom-left-radius: 0;
       overflow: hidden;
       -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC); }
-    .player.big .waveform-container {
+    .player.big .waveform-container, .player.song_page .waveform-container {
       height: 96px;
       position: relative;
       background: #F2F2F2;
       border-radius: 3px;
-      overflow: hidden;
       margin-bottom: 8px; }
-      .player.big .waveform-container .loading-container {
+      .player.big .waveform-container .loading-container, .player.song_page .waveform-container .loading-container {
         text-align: center;
         height: 96px;
         line-height: 96px;
         font-size: .9em;
         color: #AAA; }
-      .player.big .waveform-container .progress-container {
+      .player.big .waveform-container .progress-container, .player.song_page .waveform-container .progress-container {
         position: absolute;
         top: 0;
         left: 0;
         height: 96px;
-        background-color: rgba(255, 255, 255, 0.3); }
-    .player.big .progress-bar-time {
+        background: linear-gradient(to bottom, #62b2e8 0%, #386f8a 100%); }
+    .player.big .progress-bar-time, .player.song_page .progress-bar-time {
       cursor: default;
       top: 41.5px; }
-    .player.big .progress-bar-time::selection {
+    .player.big .progress-bar-time::selection, .player.song_page .progress-bar-time::selection {
       background-color: #000; }
-    .player.big .progress-bar-time::-moz-selection {
+    .player.big .progress-bar-time::-moz-selection, .player.song_page .progress-bar-time::-moz-selection {
       background-color: #000; }
-    .player.big .progress {
+    .player.big .progress, .player.song_page .progress {
       height: 20px;
       top: 38px; }
-    .player.big .duration-time-bar {
+    .player.big .duration-time-bar, .player.song_page .duration-time-bar {
       display: none;
       position: absolute;
       width: 33px;
@@ -269,7 +302,7 @@ or wrap each row of columns in a <div class="row"> */
       color: #FFF;
       line-height: 12px;
       padding: 0 3px; }
-    .player.big .player-error-container {
+    .player.big .player-error-container, .player.song_page .player-error-container {
       display: none;
       position: absolute;
       top: 0;

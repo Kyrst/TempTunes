@@ -100,6 +100,8 @@ class User extends KyrstUser {
 
 ### Change app/config/auth.php
 
+Maybe not?
+
 Change ``'model' => 'User',`` to ``'model' => 'Kyrst\Base\Models\User',``
 
 ## Includes

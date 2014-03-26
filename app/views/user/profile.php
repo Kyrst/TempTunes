@@ -16,7 +16,7 @@
 
 	<?php foreach ( $songs as $song ): ?>
 		<div id="song_<?= $song->id ?>" class="song">
-			<?php $song->print_player(Song::PLAYER_SIZE_BIG) ?>
+			<?= $song->print_player(Song::PLAYER_SIZE_BIG) ?>
 		</div>
 	<?php endforeach ?>
 

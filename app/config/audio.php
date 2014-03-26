@@ -3,8 +3,10 @@ return array
 (
 	'LAME' => '/usr/local/bin/lame',
 	'SOX' => '/usr/local/bin/sox',
-	'waveform' => '/usr/bin/waveform',
+	'WAVEFORM' => '/usr/bin/waveform',
 	'STDOUT' => '2>&1',
+
+	'DEFAULT_VOLUME' => 50,
 
 	'player_sizes' => array
 	(
