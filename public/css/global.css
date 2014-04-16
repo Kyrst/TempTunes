@@ -46,17 +46,28 @@ or wrap each row of columns in a <div class="row"> */
 
 #header_player_container {
   position: absolute;
-  right: 260px;
+  right: 363px;
   top: 18px;
-  font-size: 0.8em; }
+  font-size: .8em;
+  text-align: right; }
+
+#header_player_controls {
+  display: none;
+  float: left; }
+
+#header_player_pause {
+  display: none; }
 
 #header_player_title, #header_player_time {
   color: #CCC; }
 
+#header_player_title {
+  display: none; }
+
 #volume_control_container {
   float: right;
   width: auto;
-  margin: 15px 15px 0 0; }
+  margin: 14px 15px 0 0; }
 
 #volume_control {
   width: 100px;
@@ -199,7 +210,7 @@ or wrap each row of columns in a <div class="row"> */
       top: 0;
       background-color: #333;
       color: #FFF;
-      padding: 3px 8px 5px 8px;
+      padding: 3px 8px;
       font-size: .7em;
       z-index: 100; }
       .player .comments-container .comment-data span {
@@ -207,6 +218,13 @@ or wrap each row of columns in a <div class="row"> */
         color: #cccccc; }
       .player .comments-container .comment-data p {
         margin: 0; }
+    .player .comments-container .comment-tools {
+      display: none;
+      position: absolute;
+      top: 0;
+      background-color: red;
+      width: 100px;
+      height: 30px; }
   .player .marker {
     display: none;
     background: #CCC;
@@ -231,7 +249,7 @@ or wrap each row of columns in a <div class="row"> */
           color: #333333; }
         .player.big .header h2 a:hover, .player.song_page .header h2 a:hover {
           text-decoration: none; }
-      .player.big .header .uploaded, .player.song_page .header .uploaded {
+      .player.big .header .song-version-info, .player.song_page .header .song-version-info {
         float: right;
         color: #AAA;
         font-size: .8em;
@@ -241,6 +259,8 @@ or wrap each row of columns in a <div class="row"> */
         cursor: pointer; }
       .player.big .header .version-dropdown, .player.song_page .header .version-dropdown {
         margin-top: 6px; }
+      .player.big .header .user-tools, .player.song_page .header .user-tools {
+        margin: 5px 4px 0 0; }
     .player.big .waveform, .player.song_page .waveform {
       height: 96px;
       background-size: 100% 100%;

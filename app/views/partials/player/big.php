@@ -3,28 +3,54 @@
 	<!-- Header -->
 	<div id="player_header_<?= $identifier ?>" class="header clearfix">
 		<!-- Heading -->
-		<?php //if ( $show_actions_checkbox ): ?>
+		<?php /*if ( $show_actions_checkbox ): ?>
 			<input type="checkbox" name="selected_songs[]" value="<?= $song->id ?>" class="pull-left checkbox">
-		<?php //endif ?>
+		<?php endif*/ ?>
 
 		<!-- Title -->
-		<h2 class="pull-left"><a href="<?= $song->get_url(Song::URL_PUBLIC) ?>"><?= $song->title ?></a></h2>
+		<h2 class="pull-left"><a href="<?= $song->get_url(Song::URL_PUBLIC) ?>" id="player_title_<?= $identifier ?>"><?= e($song->title) ?></a></h2>
 
 		<!-- Version -->
-		<div id="player_version_dropdown_<?= $identifier ?>" class="version-dropdown btn-group pull-right">
-			<button type="button" id="song_version_downdown_button_<?= $song->id ?>" data-selected_song_version_id="<?= $song_version->id ?>" data-selected_version="<?= $song_version->version ?>" class="btn btn-default btn-xs dropdown-toggle<?php if ( $song->uploads->count() === 1 ): ?> disabled<?php endif ?>"" data-toggle="dropdown">
-				Version <?= $song->version ?> <span class="caret"></span>
-			</button>
+		<?php if ( $song->uploads->count() > 1 ): ?>
+			<div id="player_version_dropdown_<?= $identifier ?>" class="version-dropdown btn-group pull-right">
+				<button type="button" id="song_version_downdown_button_<?= $song->id ?>" data-selected_song_version_id="<?= $song_version->id ?>" data-selected_version="<?= $song_version->version ?>" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+					Version <?= $song->version ?> <span class="caret"></span>
+				</button>
 
-			<ul id="song_versions_list_<?= $song->id ?>" class="dropdown-menu" role="menu">
-				<?php foreach ( $song->get_uploads('desc') as $_song_version ): ?>
-					<li id="song_version_version_<?= $_song_version->id ?>"<?php if ( $_song_version->id === $song_version->id ): ?> class="active"<?php endif ?>><a href="javascript:" data-song_id="<?= $_song_version->song_id ?>" data-song_version_id="<?= $_song_version->id ?>" class="change-version">Version <?= $_song_version->version ?></a></li>
-				<?php endforeach ?>
-			</ul>
+				<ul id="song_versions_list_<?= $song->id ?>" class="dropdown-menu" role="menu">
+					<?php foreach ( $song->get_uploads('desc') as $_song_version ): ?>
+						<li id="song_version_version_<?= $_song_version->id ?>"<?php if ( $_song_version->id === $song_version->id ): ?> class="active"<?php endif ?>><a href="javascript:" data-song_id="<?= $_song_version->song_id ?>" data-song_version_id="<?= $_song_version->id ?>" class="change-version btn-xs">Version <?= $_song_version->version ?></a></li>
+					<?php endforeach ?>
+				</ul>
+			</div>
+		<?php endif ?>
+
+		<?php if ( $song_version->song->user_id === $logged_in_user->id ): ?>
+			<div class="user-tools pull-right">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="<?= $song_version->song->get_url(Song::URL_UPLOAD_NEW_VERSION) ?>" class="btn-xs">Upload New Version</a></li>
+						<li class="divider"></li>
+						<li><a href="javascript:" data-song_id="<?= $song_version->song_id ?>" class="delete-song-button btn-xs">Delete Song</a></li>
+						<li><a href="javascript:" data-song_version_id="<?= $song_version->id ?>" class="delete-song-version-button btn-xs">Delete Version</a></li>
+					</ul>
+				</div>
+			</div>
+		<?php endif ?>
+
+		<!-- Song Version Info -->
+		<div class="song-version-info">
+			<!-- Song Title -->
+			<span id="song_version_title_<?= $identifier ?>" class="song-version-title"><?= $song_version->title ?></span>
+
+			<span class="song-info-separator">|</span>
+
+			<!-- Uploaded -->
+			<span id="song_version_uploaded_<?= $identifier ?>" class="uploaded">Uploaded <?= $song_version->created_at ?></span>
 		</div>
-
-		<!-- Uploaded -->
-		<span class="uploaded">Uploaded <?= $song->created_at ?></span>
 	</div>
 
 	<!-- Waveform -->
@@ -63,8 +89,13 @@
 					<div id="comment_hover_<?= $comment->id ?>" class="comment-hover" data-is_open="no"></div>
 				</div>
 
-				<div id="comment_data_<?= $comment->id ?>" class="comment-data">
+				<div id="comment_data_<?= $comment->id ?>" class="comment-data" data-comment_id="<?= $comment->id ?>">
 					<?= $comment->get_hover_html() ?>
+				</div>
+
+				<div id="comment_tools_<?= $comment->id ?>" class="comment-tools">
+					<a href="javascript:">Edit</a>
+					<a href="javascript:">Delete</a>
 				</div>
 			<?php endforeach ?>
 		</div>
@@ -80,7 +111,7 @@
 		<a href="javascript:" data-song_version_id="<?= $song_version->id ?>" id="player_pause_button_<?= $identifier ?>" class="pause-button btn btn-primary btn-xs pull-left">Pause</a>
 		<a href="javascript:" data-song_version_id="<?= $song_version->id ?>" id="player_stop_button_<?= $identifier ?>" class="stop-button btn btn-primary btn-xs pull-left disabled">Stop</a>
 
-		<a href="javascript:" data-song_version_id="<?= $song_version->id ?>" id="player_open_add_comment_bubble_button_<?= $identifier ?>" class="add-comment-button btn btn-primary btn-xs pull-left disabled last">Add Comment</a>
+		<a href="javascript:" data-song_version_id="<?= $song_version->id ?>" id="player_open_add_comment_bubble_button_<?= $identifier ?>" class="add-comment-button btn btn-primary btn-xs pull-left disabled">Add Comment</a>
 
 		<?php /*<div class="btn-group btn-group-justified pull-left" style="width:180px;margin-left:2px">
 			<a href="javascript:" id="set_start_loop_marker" class="set-start-loop-button btn btn-xs btn-success disabled">Set Start Loop</a>

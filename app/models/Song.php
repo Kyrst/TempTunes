@@ -3,6 +3,7 @@ class Song extends Eloquent
 {
 	const URL_PUBLIC = 'public';
 	const URL_EDIT = 'edit';
+	const URL_UPLOAD_NEW_VERSION = 'upload_new_version';
 
 	const PLAYER_SIZE_BIG = 'big';
 	const PLAYER_SIZE_SONG_PAGE = 'song_page';
@@ -14,6 +15,11 @@ class Song extends Eloquent
 	public function user()
 	{
 		return $this->belongsTo('User');
+	}
+
+	public function versions()
+	{
+		return $this->hasMany('Song_Version');
 	}
 
 	public function uploads()
@@ -45,6 +51,10 @@ class Song extends Eloquent
 		elseif ( $type === self::URL_EDIT )
 		{
 			return URL::to('dashboard/edit-song/' . $this->slug);
+		}
+		elseif ( $type === self::URL_UPLOAD_NEW_VERSION )
+		{
+			return URL::to('dashboard/upload-songs/' . $this->id);
 		}
 
 		return NULL;
@@ -114,6 +124,7 @@ class Song extends Eloquent
 		$player_view->identifier = $this->id . '_' . $song_version->id;
 		$player_view->size = $size;
 		$player_view->user_id = $song_version->song->user_id;
+		$player_view->logged_in_user = Auth::user();
 
 		return $player_view->render();
 	}

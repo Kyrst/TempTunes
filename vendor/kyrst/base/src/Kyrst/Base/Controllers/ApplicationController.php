@@ -73,8 +73,6 @@ class ApplicationController extends BaseController
 
 	public function index()
 	{
-		die('wtf this should never happen :/');
-
 		$this->display();
 	}
 }

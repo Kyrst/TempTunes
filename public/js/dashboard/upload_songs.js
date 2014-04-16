@@ -1,4 +1,4 @@
-$(function()
+ $(function()
 {
 	_.templateSettings =
 	{
@@ -30,13 +30,15 @@ $(function()
 				}
 
 				//$('#upload_progress_items').prepend('<div id="upload_item_' + i + '" class="upload-item"><span class="upload-item-title">' + file.name + '</span><progress id="' + progress_bar_selector + '" class="upload-item-progress-bar"></progress><span id="upload_item_progress_status_' + i + '" class="upload-item-progress-status">0%</span><div class="clear"></div><ul id="upload_item_progress_buttons_' + i + '" class="upload-item-progress-buttons"><li><a href="javascript:" id="upload_item_cancel_button_' + i + '" data-index="' + i + '">Cancel</a></li></ul><div id="upload_item_status_' + i + '" class="upload-item-status"></div></div>');
-
-				var upload_progress_item_html = _.template($('#upload_item_template').html(),
-				{
-					index: i,
-					name: file.name,
-					progress_bar_selector: progress_bar_selector
-				});
+				var upload_progress_item_html = _.template
+				(
+					$('#upload_item_template').html(),
+					{
+						index: i,
+						name: file.name,
+						progress_bar_selector: progress_bar_selector
+					}
+				);
 
 				$('#upload_progress_items').prepend(upload_progress_item_html);
 

@@ -56,7 +56,7 @@ module.exports = function (grunt) {
         src: 'js/tests/unit/*.js'
       },
       assets: {
-        src: 'docs/assets/js/src/*.js'
+        src: 'docs/assets/js/_src/*.js'
       }
     },
 
@@ -78,6 +78,9 @@ module.exports = function (grunt) {
         src: '<%= jshint.test.src %>'
       },
       assets: {
+        options: {
+          requireCamelCaseOrUpperCaseIdentifiers: null
+        },
         src: '<%= jshint.assets.src %>'
       }
     },
@@ -107,9 +110,6 @@ module.exports = function (grunt) {
     },
 
     uglify: {
-      options: {
-        report: 'min'
-      },
       bootstrap: {
         options: {
           banner: '<%= banner %>'
@@ -122,13 +122,13 @@ module.exports = function (grunt) {
           preserveComments: 'some'
         },
         src: [
-          'docs/assets/js/vendor/less.min.js',
-          'docs/assets/js/vendor/jszip.min.js',
-          'docs/assets/js/vendor/uglify.min.js',
-          'docs/assets/js/vendor/blob.js',
-          'docs/assets/js/vendor/filesaver.js',
+          'docs/assets/js/_vendor/less.min.js',
+          'docs/assets/js/_vendor/jszip.min.js',
+          'docs/assets/js/_vendor/uglify.min.js',
+          'docs/assets/js/_vendor/blob.js',
+          'docs/assets/js/_vendor/filesaver.js',
           'docs/assets/js/raw-files.min.js',
-          'docs/assets/js/src/customizer.js'
+          'docs/assets/js/_src/customizer.js'
         ],
         dest: 'docs/assets/js/customize.min.js'
       },
@@ -137,8 +137,8 @@ module.exports = function (grunt) {
           preserveComments: 'some'
         },
         src: [
-          'docs/assets/js/vendor/holder.js',
-          'docs/assets/js/src/application.js'
+          'docs/assets/js/_vendor/holder.js',
+          'docs/assets/js/_src/application.js'
         ],
         dest: 'docs/assets/js/docs.min.js'
       }
@@ -178,8 +178,7 @@ module.exports = function (grunt) {
       },
       minify: {
         options: {
-          cleancss: true,
-          report: 'min'
+          cleancss: true
         },
         files: {
           'dist/css/<%= pkg.name %>.min.css': 'dist/css/<%= pkg.name %>.css',
@@ -206,7 +205,7 @@ module.exports = function (grunt) {
         src: 'dist/css/<%= pkg.name %>-theme.css'
       },
       docs: {
-        src: 'docs/assets/css/src/docs.css'
+        src: 'docs/assets/css/_src/docs.css'
       },
       examples: {
         expand: true,
@@ -240,21 +239,20 @@ module.exports = function (grunt) {
           ids: false,
           'overqualified-elements': false
         },
-        src: 'docs/assets/css/src/docs.css'
+        src: 'docs/assets/css/_src/docs.css'
       }
     },
 
     cssmin: {
       options: {
+        compatibility: 'ie8',
         keepSpecialComments: '*',
-        noAdvanced: true, // turn advanced optimizations off until the issue is fixed in clean-css
-        report: 'min',
-        compatibility: 'ie8'
+        noAdvanced: true // turn advanced optimizations off until the issue is fixed in clean-css
       },
       docs: {
         src: [
-          'docs/assets/css/src/docs.css',
-          'docs/assets/css/src/pygments-manni.css'
+          'docs/assets/css/_src/docs.css',
+          'docs/assets/css/_src/pygments-manni.css'
         ],
         dest: 'docs/assets/css/docs.min.css'
       }
@@ -288,7 +286,7 @@ module.exports = function (grunt) {
       },
       docs: {
         files: {
-          'docs/assets/css/src/docs.css': 'docs/assets/css/src/docs.css'
+          'docs/assets/css/_src/docs.css': 'docs/assets/css/_src/docs.css'
         }
       }
     },
@@ -336,8 +334,8 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'docs/_includes/customizer-variables.html': 'docs/jade/customizer-variables.jade',
-          'docs/_includes/nav/customize.html': 'docs/jade/customizer-nav.jade'
+          'docs/_includes/customizer-variables.html': 'docs/_jade/customizer-variables.jade',
+          'docs/_includes/nav/customize.html': 'docs/_jade/customizer-nav.jade'
         }
       }
     },

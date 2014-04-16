@@ -95,7 +95,7 @@ class UserController extends BaseController
 	{
 		try
 		{
-			$user = User::where('slug', trim($username))->firstOrFail();
+			$profile_user = User::where('slug', trim($username))->firstOrFail();
 		}
 		catch ( Illuminate\Database\Eloquent\ModelNotFoundException $e )
 		{
@@ -104,7 +104,18 @@ class UserController extends BaseController
 			return Redirect::route('home');
 		}
 
-		$this->assign('profile_user', $user);
+		if ( $this->user->id !== $profile_user->id )
+		{
+			return Redirect::route('home');
+		}
+
+		$this->assign('profile_user', $profile_user);
+
+		$friends = $profile_user->get_friends(User_Friend::STATUS_ACCEPTED);
+		$this->assign('friends', $friends);
+
+		$friend_requests = $profile_user->get_friend_requests(User_Friend::STATUS_PENDING);
+		$this->assign('friend_requests', $friend_requests);
 
 		$this->display();
 	}

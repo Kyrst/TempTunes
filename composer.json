@@ -7,6 +7,7 @@
 		"laravel/framework": "4.1.*",
 		"intervention/image": "dev-master",
 		"intervention/imagecache": "dev-master",
+		"stripe/stripe-php": "dev-master",
 		"kyrst/base": "dev-master"
 	},
 	"autoload": {

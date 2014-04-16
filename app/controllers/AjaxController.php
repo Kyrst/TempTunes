@@ -39,4 +39,76 @@ class AjaxController extends BaseController
 
 		return $this->ajax->output();
 	}
+
+	public function get_friends_autocomplete()
+	{
+		$input = Input::all();
+
+		if ( !isset($input['term']) )
+		{
+			return $this->ajax->output_with_error('MISSING_TERM');
+		}
+
+		$term = trim($input['term']);
+
+		$result_users = User::where('email', 'LIKE', '%' . $term . '%')
+			->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'LIKE', '%' . $term . '%')
+			->orWhere('username', 'LIKE', $term)
+			->where('id', '!=', $this->user->id)
+			->get();
+
+		$users = array();
+
+		foreach ( $result_users as $user )
+		{
+			$users[] = array
+			(
+				'id' => $user->id,
+				'label' => $user->username . ' / ' . $user->get_name() . ' / ' . $user->email
+			);
+		}
+
+		return Response::json($users);
+	}
+
+	public function send_friend_request()
+	{
+		$input = Input::all();
+
+		if ( !isset($input['friend_user_id']) || !filter_var($input['friend_user_id'], FILTER_VALIDATE_INT) )
+		{
+			return $this->ajax->output_with_error('MISSING_FRIEND_USER_ID');
+		}
+
+		$friend_user_id = $input['friend_user_id'];
+
+		$user_friend = new User_Friend();
+		$user_friend->user_id = $this->user->id;
+		$user_friend->friend_id = $friend_user_id;
+		$user_friend->save();
+
+		return $this->ajax->output();
+	}
+
+	public function respond_to_friend_request()
+	{
+		$input = Input::all();
+
+		$id = $input['id'];
+		$accept_or_deny = $input['accept_or_deny'];
+
+		try
+		{
+			$friend_request = User_Friend::where('id', $id)->firstOrFail();
+		}
+		catch ( \Illuminate\Database\Eloquent\ModelNotFoundException $e )
+		{
+			return $this->ajax->output_with_error('FRIEND_REQUEST_NOT_FOUND');
+		}
+
+		$friend_request->status = ($accept_or_deny === 'accept' ? User_Friend::STATUS_ACCEPTED : User_Friend::STATUS_DENIED);
+		$friend_request->save();
+
+		return $this->ajax->output();
+	}
 }

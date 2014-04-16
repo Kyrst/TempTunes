@@ -1,0 +1,6 @@
+#friends {
+  margin-top: 12px; }
+  #friends .friend {
+    margin-bottom: 10px; }
+  #friends .friend:last-child {
+    margin-bottom: 0; }

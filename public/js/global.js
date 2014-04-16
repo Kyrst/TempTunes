@@ -1,7 +1,7 @@
 var $volume_control;
 
 $player_manager = new PlayerManager();
-$player_manager.init(buzz);
+$player_manager.init(buzz, current_song_cookie);
 
 $(function()
 {
@@ -9,7 +9,7 @@ $(function()
 
 	$player_manager.after_dom_init();
 
-	$('#volume_control').on('change', function()
+	$('#volume_control').on('input change', function()
 	{
 		update_volume_control_appearance($(this).val());
 	});

@@ -258,7 +258,6 @@ class BaseController extends \Controller
 				$include_js($lib['js']);
 		}
 
-		// Load global.js
 		$this->add_js('js/global.js');
 
 		// Auto load layout

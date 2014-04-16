@@ -86,6 +86,29 @@ class ImageCacheTest extends PHPUnit_Framework_Testcase
         $this->assertEquals($img->checksum(), $sum);
     }
 
+    public function testChecksumWithClosure()
+    {
+        // closure must be serializable
+        $sum = '96cb89799900f6655c75b2b3a671ca38';
+        $img = new ImageCache;
+        $img->canvas(300, 200, 'fff');
+        $img->text('foo', 0, 0, function($font) {
+            $font->valign('top');
+            $font->size(32);
+        });
+        $this->assertEquals($img->checksum(), $sum);
+
+        // checksum must differ, if values in closure change
+        $sum = '8ae197da869264c480c3093aa031fb20';
+        $img = new ImageCache;
+        $img->canvas(300, 200, 'fff');
+        $img->text('foo', 0, 0, function($font) {
+            $font->valign('top');
+            $font->size(30);
+        });
+        $this->assertEquals($img->checksum(), $sum);
+    }
+
     public function testProcess()
     {
         $img = new ImageCache;
@@ -176,5 +199,16 @@ class ImageCacheTest extends PHPUnit_Framework_Testcase
         // come from cache so encoded should not be null
         $this->assertEquals(is_null($image->encoded), false);
         
+    }
+
+    public function testGetAlreadyEncodedImageFromCache()
+    {
+        $imagecache = new ImageCache;
+        
+        // empty cache directory
+        $this->emptyCacheDirectory();
+
+        $image = $imagecache->make('public/test.jpg')->encode('jpg', 5)->get(5, false);
+        $this->assertInternalType('string', $image);
     }
 }

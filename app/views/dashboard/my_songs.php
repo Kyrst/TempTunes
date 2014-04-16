@@ -1,13 +1,22 @@
 <h1>My Songs</h1>
 
-<p>Fixa funktion sa man kan saga te.x. "jag vill lyssna pa dessa 10 sekunder fran version 4", sa kan man ha 2 waveforms med dom sektionerna.</p>
-
 <div class="content-separator larger">
 	<a href="<?= URL::to('dashboard/upload-songs') ?>" class="btn btn-default btn-sm">Upload Song</a>
 </div>
 
-<?php if ( $num_songs > 0 ): ?>
+<!-- Songs -->
+<form action="<?= $user->get_link(User::URL_SONGS) ?>" method="post" id="songs_form">
 
+	<?php foreach ( $songs as $song ): ?>
+		<div id="song_<?= $song->id ?>" class="song">
+			<?= $song->print_player(Song::PLAYER_SIZE_BIG) ?>
+		</div>
+	<?php endforeach ?>
+
+</form>
+
+<?php /*
+<?php if ( $num_songs > 0 ): ?>
 	<div id="songs">
 		<?php foreach ( $songs as $song ): ?>
 			<?php $latest_song_version = $song->get_latest_version() ?>
@@ -57,7 +66,6 @@
 			</div>
 		<?php endforeach ?>
 	</div>
-
 <?php endif ?>
 
-<p id="no_songs_uploaded"<?php if ( $num_songs > 0 ): ?> class="hide"<?php endif ?>>No songs uploaded.</p>
+<p id="no_songs_uploaded"<?php if ( $num_songs > 0 ): ?> class="hide"<?php endif ?>>No songs uploaded.</p>*/ ?>

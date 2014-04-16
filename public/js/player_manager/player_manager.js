@@ -12,7 +12,9 @@ PlayerManager.prototype =
 
 	volume: null,
 
-	init: function(buzz)
+	current_song_cookie: null,
+
+	init: function(buzz, current_song_cookie)
 	{
 		this.window = window;
 		this.buzz = buzz;
@@ -23,6 +25,13 @@ PlayerManager.prototype =
 		}
 
 		this.volume = volume;
+
+		this.current_song_cookie = current_song_cookie;
+
+		if ( this.current_song_cookie )
+		{
+			this.current_player_id = current_song_cookie.song_id + '_' + current_song_cookie.song_version_id;
+		}
 
 		this.binds();
 	},
@@ -54,6 +63,22 @@ PlayerManager.prototype =
 			init_player($(this));
 		});
 
+		// Header
+		$('#header_player_play').on('click', function()
+		{
+			$('#player_play_button_' + inst.current_player_id).trigger('click');
+		});
+
+		$('#header_player_pause').on('click', function()
+		{
+			$('#player_pause_button_' + inst.current_player_id).trigger('click');
+		});
+
+		$('#header_player_stop').on('click', function()
+		{
+			$('#player_stop_button_' + inst.current_player_id).trigger('click');
+		});
+
 		// If song_player player, go back to first tab when done
 		if ( detected_player_size === 'song_page' )
 		{
@@ -74,82 +99,6 @@ PlayerManager.prototype =
 				id = song_id + '_' + song_version_id,
 				is_dragging_start_marker = false,
 				is_dragging_end_marker = false;
-
-			if ( DEBUG )
-			{
-				//console.log('~ Player #' + (i + 1) + ' ~');
-			}
-
-			/*var is_missing_attr = false;
-
-			 if ( $kyrst.is_undefined(size) )
-			 {
-			 console.log('Missing "size".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( $kyrst.is_undefined(song_id) )
-			 {
-			 console.log('Missing "song_id".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( $kyrst.is_undefined(song_version_id) )
-			 {
-			 console.log('Missing "song_version_id".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( $kyrst.is_undefined(identifier) )
-			 {
-			 console.log('Missing "identifier".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( $kyrst.is_undefined(filename) )
-			 {
-			 console.log('Missing "filename".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( $kyrst.is_undefined(mp3_route) )
-			 {
-			 console.log('Missing "mp3_route".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( $kyrst.is_undefined(wav_route) )
-			 {
-			 console.log('Missing "wav_route".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( $kyrst.is_undefined(waveform_image) )
-			 {
-			 console.log('Missing "waveform_image".');
-
-			 is_missing_attr = true;
-			 }
-
-			 if ( is_missing_attr )
-			 {
-			 console.log('----------------------------------------------------------');
-
-			 return;
-			 }*/
-
-			if ( DEBUG )
-			{
-				//console.log('Selector: #' + $element.id + '\nSize: ' + size);
-				//Song ID: ' + song_id + '\nSong Version ID: ' + song_version_id + '\nFilename: ' + filename + '\nMP3 Route: ' + mp3_route + '\nWAV Route: ' + wav_route + '\n----------------------------------------------------------');
-			}
 
 			function load_sound(mp3_route, wav_route)
 			{
@@ -294,7 +243,7 @@ PlayerManager.prototype =
 								is_dragging_end_marker = false;
 							});
 
-							$waveform_background.on('click', function(e)
+							$waveform_background.on('click mousedown', function(e)
 							{
 								var position_in_px = e.pageX - $(this).offset().left,
 									position_in_seconds = position_in_px_to_seconds(position_in_px),
@@ -341,8 +290,14 @@ PlayerManager.prototype =
 					function play()
 					{
 						$play_button.hide();
+						$('#header_player_play').hide();
+
 						$pause_button.show();
+						$('#header_player_pause').show();
+
 						$stop_button.removeClass('disabled');
+						$('#header_player_stop').removeClass('disabled');
+
 						$progress_bar_time.show();
 
 						var current_player = get_current_player();
@@ -352,8 +307,16 @@ PlayerManager.prototype =
 					function stop()
 					{
 						$pause_button.hide();
+						$('#header_player_pause').hide();
+
 						$play_button.show();
+						$('#header_player_play').show();
+
 						$stop_button.addClass('disabled');
+						$('#header_player_stop').addClass('disabled');
+
+						$('#header_player_container').hide();
+
 						$progress_bar_time.hide().html('00:00').css('left', 0);
 
 						$progress_container.width(0);
@@ -432,8 +395,15 @@ PlayerManager.prototype =
 						$comment.on('mouseover', function()
 						{
 							comment_hover_bind($(this).data('comment_id'));
-						}).on('mouseout', function()
+						}).on('mouseout', function(e)
 						{
+							var $left_to_element = e.toElement;
+
+							if ( $left_to_element.className === 'comment-data' )
+							{
+								return;
+							}
+
 							comment_hover_bind($(this).data('comment_id'));
 						}).on('click', function()
 						{
@@ -501,6 +471,10 @@ PlayerManager.prototype =
 						$comment_data.style.left = (position_in_px + user_photo_width) + 'px';
 						$comment_data.className = 'comment-data';
 						$comment_data.innerHTML = comment;
+						$comment_data.onmouseout = function()
+						{
+							comment_hover_bind(id);
+						};
 
 						var $comment_hover = document.createElement('div');
 						$comment_hover.id = 'comment_hover_' + id;
@@ -536,6 +510,13 @@ PlayerManager.prototype =
 							update_comment_marker_container_size();
 						}
 					}
+
+					$('#comments_container_' + id).find('.comment-data').on('mouseout', function()
+					{
+						var comment_id = $(this).data('comment_id');
+
+						comment_hover_bind(comment_id);
+					});
 
 					function close_add_comment_bubble()
 					{
@@ -582,7 +563,8 @@ PlayerManager.prototype =
 					{
 						inst.current_player_id = id;
 
-						$('#header_player_title').html(title);
+						$('#header_player_title').html(title).css('display', 'inline-block');
+						$('#header_player_container, #header_player_controls').show();
 					}
 
 					function open_add_comment_bubble()
@@ -645,13 +627,18 @@ PlayerManager.prototype =
 					}
 
 					// Change Version
-
 					$player.find('.change-version').on('click', function()
 					{
 						var $this = $(this),
 							_song_id = $this.data('song_id'),
 							_song_version_id = $this.data('song_version_id'),
 							new_id = _song_id + '_' + _song_version_id;
+
+						// If clicked on the version where already on
+						if ( identifier === new_id )
+						{
+							return;
+						}
 
 						stop();
 
@@ -672,28 +659,9 @@ PlayerManager.prototype =
 
 									init_player($('#player_' + new_id));
 
-									/*inst.players[new_id] =
-									 {
-									 sound: load_sound(song_version.mp3_route, song_version.wav_route)
-									 };
-
-									 change_player(new_id);
-
-									 $play_button.attr('data-id', new_id);
-
-									 var waveform_image = new Image();
-									 waveform_image.src = song_version.waveform_image;
-
-									 $waveform.css('background-image', 'url(' + song_version.waveform_image + ')');
-
-									 waveform_image.onload = function()
-									 {
-									 $waveform_background.addClass('loaded');
-									 }*/
-
-									 $('#song_versions_list_' + song_id + ' li.active').removeClass('active');
-									 $('#song_version_version_' + _song_version_id).addClass('active');
-									 $('#song_version_downdown_button_' + song_id).html($('#song_version_version_' + _song_version_id + ' a').html() + ' <span class="caret"></span>');
+									$('#song_versions_list_' + song_id + ' li.active').removeClass('active');
+									$('#song_version_version_' + _song_version_id).addClass('active');
+									$('#song_version_downdown_button_' + song_id).html($('#song_version_version_' + _song_version_id + ' a').html() + ' <span class="caret"></span>');
 								},
 								error: function(error)
 								{
@@ -703,6 +671,22 @@ PlayerManager.prototype =
 								}
 							}
 						);
+					});
+
+					$player.find('.delete-song-button').on('click', function()
+					{
+						var $this = $(this),
+							id = $this.data('song_id');
+
+						console.log(id);
+					});
+
+					$player.find('.delete-song-version-button').on('click', function()
+					{
+						var $this = $(this),
+							id = $this.data('song_version_id');
+
+						console.log(id);
 					});
 				}(sound, id));
 
@@ -755,11 +739,40 @@ PlayerManager.prototype =
 		this.players[this.current_player_id].sound.pause();
 
 		$('#player_pause_button_' + this.current_player_id).hide();
+		$('#header_player_pause').hide();
+
 		$('#player_play_button_' + this.current_player_id).show();
+		$('#header_player_play').show();
 	},
 
 	onbeforeunload: function()
 	{
+		// Save playing song
+		if ( this.current_player_id !== null )
+		{
+			var current_player = this.players[this.current_player_id],
+				split = this.current_player_id.split('_'),
+				song_id = parseInt(split[0], 10),
+				song_version_id = parseInt(split[1], 10);
+
+			var sound = ($kyrst.is_defined(current_player) && $kyrst.is_defined(current_player.sound)) ? true : false;
+
+			var song_cookie_data =
+			{
+				song_id: song_id,
+				song_version_id: song_version_id,
+				current_position: sound ? current_player.sound.getTime() : -1,
+				duration: sound ? current_player.sound.getDuration() : -1,
+				is_playing: sound ? (!current_player.sound.isPaused() ? 1 : 0) : -1
+			};
+
+			$.cookie('current_song', JSON.stringify(song_cookie_data), { path: '/', expires: 7 });
+		}
+		else // No current song, remove cookie
+		{
+			$.removeCookie('current_song', { path: '/' });
+		}
+
 		// Save volume
 		$.cookie('volume', this.volume, { path: '/' });
 	}

@@ -64,9 +64,21 @@ or wrap each row of columns in a <div class="row"> */
 #header_player_container
 {
 	position: absolute;
-	right: 260px;
+	right: 363px;
 	top: 18px;
-	font-size: .8em
+	font-size: .8em;
+	text-align: right;
+}
+
+#header_player_controls
+{
+	display: none;
+	float: left;
+}
+
+#header_player_pause
+{
+	display: none
 }
 
 #header_player_title, #header_player_time
@@ -74,11 +86,16 @@ or wrap each row of columns in a <div class="row"> */
 	color: #CCC;
 }
 
+#header_player_title
+{
+	display: none;
+}
+
 #volume_control_container
 {
 	float: right;
 	width: auto;
-	margin: 15px 15px 0 0;
+	margin: 14px 15px 0 0;
 }
 
 #volume_control
@@ -309,7 +326,7 @@ or wrap each row of columns in a <div class="row"> */
 			top: 0;
 			background-color: #333;
 			color: #FFF;
-			padding: 3px 8px 5px 8px;
+			padding: 3px 8px;
 			font-size: .7em;
 			z-index: 100;
 
@@ -323,6 +340,16 @@ or wrap each row of columns in a <div class="row"> */
 			{
 				margin: 0
 			}
+		}
+
+		.comment-tools
+		{
+			display: none;
+			position: absolute;
+			top: 0;
+			background-color: red;
+			width: 100px;
+			height: 30px;
 		}
 	}
 
@@ -375,12 +402,20 @@ or wrap each row of columns in a <div class="row"> */
 				}
 			}
 
-			.uploaded
+			.song-version-info
 			{
 				float: right;
 				color: #AAA;
 				font-size: .8em;
 				margin: 11px 8px 0 0;
+
+				.song-version-title
+				{
+				}
+
+				.uploaded
+				{
+				}
 			}
 
 			.checkbox
@@ -392,6 +427,11 @@ or wrap each row of columns in a <div class="row"> */
 			.version-dropdown
 			{
 				margin-top: 6px;
+			}
+
+			.user-tools
+			{
+				margin: 5px 4px 0 0
 			}
 		}
 

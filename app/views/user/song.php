@@ -18,6 +18,19 @@
 	<?php foreach ( $song_versions as $i => $song_version ): ?>
 		<div id="tab_<?= $song_version->id ?>" class="tab-pane<?php if ( $i === 0 ): ?> active<?php endif ?>">
 			<?= $song->print_player(Song::PLAYER_SIZE_SONG_PAGE, $song_version->id) ?>
+
+			<h4>Comments</h4>
+			<?php foreach ( $song_version->comments()->orderBy('created_at', 'DESC')->get() as $comment ): ?>
+				<div class="comment">
+					<a href="<?= $comment->user->get_link(User::URL_PROFILE) ?>"><?= $comment->user->get_name() ?></a> at <a href="javascript:"><?= Time::format_seconds($comment->from_seconds) ?><?php if ( $comment->to_seconds !== NULL ): ?> to <?= Time::format_seconds($comment->to_seconds) ?><?php endif ?></a>
+					<br>
+					<time><?= $comment->created_at ?></time>
+					<br>
+					<?= nl2br($comment->comment) ?>
+				</div>
+			<?php endforeach ?>
+
+			<h4>Shared With</h4>
 		</div>
 	<?php endforeach ?>
 </div>

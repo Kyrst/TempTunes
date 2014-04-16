@@ -145,10 +145,15 @@ class DashboardController extends BaseController
 		$this->assign('song', $song);
 		$this->assign('current_song_id', $song !== null ? $song->id : 0, 'js');
 
-		$max_upload_size = Kyrst\Base\Helpers\File::format_filesize_from_ini(ini_get('upload_max_filesize'));
+		$max_upload_size = \Symfony\Component\HttpFoundation\File\UploadedFile::getMaxFilesize();
 
 		$this->assign('max_upload_size', $max_upload_size, array('content', 'js'));
 		$this->assign('max_upload_size_formatted', Kyrst\Base\Helpers\File::format_bytes($max_upload_size));
+
+		if ( $song !== NULL )
+		{
+			$this->assign('num_current_song_versions', count($song->versions));
+		}
 
 		$this->display
 		(
@@ -253,6 +258,35 @@ class DashboardController extends BaseController
 
 		if ( 1 === 1 )
 		{
+			// Email
+			/*$email_data = array
+			(
+				'user_name' => $this->user->get_display_name(),
+				'title' => $original_filename
+			);
+
+			$share_people = array();
+
+			$friends = $this->user->friends;
+
+			foreach ( $friends as $user )
+			{
+				$share_people[] = array
+				(
+					'email' => $user->email,
+					'name' => $user->get_display_name()
+				);
+			}
+
+			Mail::send('emails.song_upload', $email_data, function($email_message, $share_people)
+			{
+				foreach ( $share_people as $user )
+				{
+					error_log('to: ' . $user['email']);
+					$email_message->to($user['email'], $user['name'])->subject($this->user->get_display_name() . ' uploaded a new song');
+				}
+			});*/
+
 			//return Response::json('success', 200);
 		}
 		else

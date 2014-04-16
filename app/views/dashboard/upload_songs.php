@@ -1,19 +1,132 @@
 <?php if ( $song !== null ): ?>
 	<h1>Upload New Version <?php /*(v<?= $song->version + 1 ?>) */ ?>of &quot;<?= $song->get_title() ?>&quot;</h1>
+
+	<h2>Current Versions</h2>
+
+	<?php if ( $num_current_song_versions > 0 ): ?>
+		<?php foreach ( $song->versions as $song_version ): ?>
+			<div class="current-version">
+				<a href="<?= $song_version->getLink() ?>"><?= $song_version->title ?></a>
+				<br>
+				Version <?= $song_version->version ?> | Uploaded <?= $song_version->created_at ?>
+			</div>
+		<?php endforeach ?>
+	<?php else: ?>
+		<p>No other versions.</p>
+	<?php endif ?>
 <?php else: ?>
-	<h1>Upload Song(s)</h1>
+	<h1>Upload Song</h1>
 <?php endif ?>
 
-<p id="max_upload_size_text">Max upload file size per file is <span id="max_upload_size"><?= $max_upload_size_formatted ?></span>.</p>
+<?php if ( $user->hasPlan() ): ?>
+	<?php
+	$can_upload = TRUE;
+	?>
+<?php else: ?>
+	<?php
+	define('FREE_PLAN_MAX_VERSIONS_PER_SONG', 2);
+	define('FREE_PLAN_MAX_SONGS', 3);
+
+	$can_upload = TRUE;
+
+	if ( $song !== NULL )
+	{
+		if ( $num_current_song_versions >= FREE_PLAN_MAX_VERSIONS_PER_SONG )
+		{
+			$can_upload = FALSE;
+		}
+	}
+	else
+	{
+		$can_upload = TRUE;
+	}
+	?>
+<?php endif ?>
 
 <form action="<?= URL::route('dashboard/upload-songs') ?>" method="post" enctype="multipart/form-data" id="upload_song_form">
-	<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="<?= $max_upload_size ?>">
+	<?php if ( $can_upload ): ?>
+		<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="<?= $max_upload_size ?>">
 
-	<div id="upload_progress_container">
-		<div id="upload_progress_items"></div>
-	</div>
+		<?php if ( 1 === 2 ): ?>
+			<h2>Select File</h2>
+		<?php endif ?>
 
-	<input type="file" id="files_input"<?php if ( $song === null ): /* Can only select one if uploading to existing songs (remove stupid rule?) */ ?> multiple<?php endif ?>>
+		<?php /*<p id="max_upload_size_text">Max upload file size is <span id="max_upload_size"><?= $max_upload_size_formatted ?></span>.</p>*/ ?>
+
+		<input type="file" id="files_input"<?php if ( !$can_upload ): ?> disabled<?php endif ?>>
+
+		<div id="upload_progress_container">
+			<div id="upload_progress_items"></div>
+		</div>
+	<?php else: ?>
+		<style>
+			.bs-callout
+			{
+				margin: 20px 0;
+				padding: 20px;
+				border-left: 3px solid #eee;
+			}
+
+			.bs-callout-info
+			{
+				background-color: #f4f8fa;
+				border-color: #5bc0de;
+			}
+
+			.bs-callout-info h4
+			{
+				color: #5bc0de;
+			}
+
+			.bs-callout h4
+			{
+				margin-top: 0;
+				margin-bottom: 5px;
+			}
+
+			.bs-callout a
+			{
+				color: #000;
+			}
+		</style>
+
+		<div class="bs-callout bs-callout-info">
+			<h4>Upgrade Your Plan</h4>
+			<p>Sorry, you have uploaded <strong><?= $num_current_song_versions ?></strong> versions of <strong><?= $song->get_title() ?></strong> already, which is the maximum number of versions per song you can upload with a free account.</p>
+
+			<p style="margin-bottom:20px">Upgrade your plan for only <strong>$5/month</strong>. <a href="<?= URL::route('dashboard/change-plan') ?>" class="btn btn-xs btn-default">More Info</a></p>
+
+			<div class="form-group clearfix">
+				<div class="col-sm-6">
+					<label>Credit Card Number</label>
+					<input type="text" name="credit_card[number]" id="credit_card_number" class="form-control">
+				</div>
+
+				<div class="col-sm-3">
+					<label>Credit Card CVC</label>
+					<input type="text" name="credit_card[cvc]" id="credit_card_cvc" class="form-control">
+				</div>
+			</div>
+
+			<div class="form-group clearfix">
+				<div class="col-sm-3">
+					<label>Exp Year</label>
+					<input type="text" name="credit_card[exp_year]" id="credit_card_exp_year" class="form-control">
+				</div>
+
+				<div class="col-sm-3">
+					<label>Exp Month</label>
+					<input type="text" name="credit_card[exp_month]" id="credit_card_exp_month" class="form-control">
+				</div>
+			</div>
+
+			<div class="form-group clearfix">
+				<div class="col-sm-12">
+					<button type="submit" class="btn btn-default">Upgrade</button>
+				</div>
+			</div>
+		</div>
+	<?php endif ?>
 </form>
 
 <?php /*<div id="upload_complete_container">

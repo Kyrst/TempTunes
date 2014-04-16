@@ -16,7 +16,7 @@ class File
 		return round($bytes, $precision) . ' ' . $units[$pow];
 	}
 
-	public static function format_filesize_from_ini($value)
+	public static function get_max_upload_file_size($value)
 	{
 		$value = trim($value);
 

@@ -29,9 +29,19 @@ class User extends KyrstUser
 		return $this->hasMany('Song');
 	}
 
+	public function friends()
+	{
+		return $this->belongsToMany('User', 'user_friends', 'user_id', 'friend_id');
+	}
+
+	public function plan()
+	{
+		return $this->belongsTo('Plan');
+	}
+
 	public function get_display_name()
 	{
-		return $this->username . ' (' . $this->get_name() . ')';
+		return $this->get_name();
 	}
 
 	public function get_link($type)
@@ -168,5 +178,64 @@ class User extends KyrstUser
 	public static function get_songs_dir($user_id, $song_id, $song_version)
 	{
 		return self::get_uploads_dir($user_id) . 'songs/' . $song_id . '/' . ($song_version !== null ? 'v' . $song_version . '/' : '');
+	}
+
+	public function is_admin()
+	{
+		return $this->is('Admin');
+	}
+
+	public function get_friends($status = NULL)
+	{
+		$result_friends = User_Friend::where('user_id', $this->id)->orWhere('friend_id', $this->id);
+
+		if ( $status !== NULL )
+		{
+			$result_friends->where('status', $status);
+		}
+
+		return $result_friends;
+	}
+
+	public function get_friend_requests()
+	{
+		$result_friend_requests = User_Friend::where('friend_id', $this->id)
+			->where('status', User_Friend::STATUS_PENDING);
+
+		return $result_friend_requests->get();
+	}
+
+	public function hasPlan()
+	{
+		return ($this->plan !== NULL);
+	}
+
+	public function get_plan_str()
+	{
+		if ( $this->hasPlan() )
+		{
+			return $this->plan->name;
+		}
+		else
+		{
+			return '/';
+		}
+	}
+
+	public function getLatestUpload()
+	{
+		try
+		{
+			$song_version = Song_Version::join('songs', 'songs.id', '=', 'song_versions.song_id')
+				->where('songs.user_id', $this->id)
+				->orderBy('song_versions.created_at', 'DESC')
+				->firstOrFail();
+
+			return $song_version;
+		}
+		catch ( \Illuminate\Database\Eloquent\ModelNotFoundException $e )
+		{
+			return NULL;
+		}
 	}
 }

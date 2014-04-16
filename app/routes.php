@@ -2,8 +2,61 @@
 // Home
 Route::get('/', array
 (
-	'uses' => 'HomeController@index',
+	'uses' => 'FrontController@index',
 	'as' => 'home'
+));
+
+// Admin
+Route::get('/admin', array
+(
+	'uses' => 'AdminController@index',
+	'as' => 'admin'
+));
+
+// Admin
+Route::get('/admin/users', array
+(
+	'uses' => 'AdminController@users',
+	'as' => 'admin/users'
+));
+
+// Admin: Get Users (AJAX)
+Route::get('/admin/get-users', array
+(
+	'uses' => 'AdminController@get_users',
+	'as' => 'admin/get-users'
+));
+
+// Admin: Add User
+Route::get('/admin/user', array
+(
+	'uses' => 'AdminController@user',
+	'as' => 'admin/user'
+));
+
+// Admin: Add User (POST)
+Route::post('/admin/user', array
+(
+	'uses' => 'AdminController@user',
+	'as' => 'admin/user'
+));
+
+// AJAX: Get friends autocomplete
+Route::get('/ajax/get-friends-autocomplete', array
+(
+	'uses' => 'AjaxController@get_friends_autocomplete'
+));
+
+// AJAX: Send friend request
+Route::post('/ajax/send-friend-request', array
+(
+	'uses' => 'AjaxController@send_friend_request'
+));
+
+// AJAX: Respond to friend request
+Route::post('ajax/respond-to-friend-request', array
+(
+	'uses' => 'AjaxController@respond_to_friend_request'
 ));
 
 // User Songs Page
@@ -33,21 +86,21 @@ Route::get('/users/{username}', array
 // Sign in (POST)
 Route::post('/sign-in', array
 (
-	'uses' => 'HomeController@sign_in',
+	'uses' => 'FrontController@sign_in',
 	'as' => 'sign-in'
 ));
 
 // Sign up
 Route::get('/sign-up', array
 (
-	'uses' => 'HomeController@sign_up',
+	'uses' => 'FrontController@sign_up',
 	'as' => 'sign-up'
 ));
 
 // Sign up (POST)
 Route::post('/sign-up', array
 (
-	'uses' => 'HomeController@sign_up',
+	'uses' => 'FrontController@sign_up',
 	'as' => 'sign-up'
 ));
 
@@ -77,6 +130,13 @@ Route::get('/dashboard/my-songs', array
 (
 	'uses' => 'DashboardController@my_songs',
 	'as' => 'dashboard/my-songs'
+));
+
+// Dashboard -> Change Plan
+Route::get('/dashboard/change-plan', array
+(
+	'uses' => 'DashboardController@change_plan',
+	'as' => 'dashboard/change-plan'
 ));
 
 // Dashboard -> My Songs -> Get Song Upload

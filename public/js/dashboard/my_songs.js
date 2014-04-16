@@ -1,7 +1,4 @@
-var wavesurfers = [];
-
-var timelines = [],
-	num_songs = 0;
+/*var num_songs = 0;
 
 $(function()
 {
@@ -247,7 +244,7 @@ $(function()
 		wavesurfers[song_id].filename = BASE_URL + 'uploads/2/' + song_id + '/v' + song_version + '/' + song_id + '.mp3';
 		wavesurfers[song_id].load(BASE_URL + 'uploads/2/' + song_id + '/v' + song_version + '/' + song_id + '.mp3');
 
-		/*(function () {
+		(function () {
 			var eventHandlers = {
 				'play': function () {
 					wavesurfer.playPause();
@@ -320,6 +317,6 @@ $(function()
 
 		wavesurfer.on('error', function (err) {
 			console.error(err);
-		});*/
+		});
 	}
-});
+});*/

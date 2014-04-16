@@ -68,7 +68,7 @@ $(function () {
 
   test('should fire show event', function () {
     stop()
-    var tooltip = $('<div title="tooltip title"></div>')
+    $('<div title="tooltip title"></div>')
       .on('show.bs.tooltip', function () {
         ok(true, 'show was called')
         start()
@@ -78,7 +78,7 @@ $(function () {
 
   test('should fire shown event', function () {
     stop()
-    var tooltip = $('<div title="tooltip title"></div>')
+    $('<div title="tooltip title"></div>')
       .on('shown.bs.tooltip', function () {
         ok(true, 'shown was called')
         start()
@@ -88,7 +88,7 @@ $(function () {
 
   test('should not fire shown event when default prevented', function () {
     stop()
-    var tooltip = $('<div title="tooltip title"></div>')
+    $('<div title="tooltip title"></div>')
       .on('show.bs.tooltip', function (e) {
         e.preventDefault()
         ok(true, 'show was called')
@@ -102,7 +102,7 @@ $(function () {
 
   test('should fire hide event', function () {
     stop()
-    var tooltip = $('<div title="tooltip title"></div>')
+    $('<div title="tooltip title"></div>')
       .on('shown.bs.tooltip', function () {
         $(this).tooltip('hide')
       })
@@ -115,7 +115,7 @@ $(function () {
 
   test('should fire hidden event', function () {
     stop()
-    var tooltip = $('<div title="tooltip title"></div>')
+    $('<div title="tooltip title"></div>')
       .on('shown.bs.tooltip', function () {
         $(this).tooltip('hide')
       })
@@ -128,7 +128,7 @@ $(function () {
 
   test('should not fire hidden event when default prevented', function () {
     stop()
-    var tooltip = $('<div title="tooltip title"></div>')
+    $('<div title="tooltip title"></div>')
       .on('shown.bs.tooltip', function () {
         $(this).tooltip('hide')
       })
@@ -272,14 +272,14 @@ $(function () {
 
   test('should show tooltip with delegate selector on click', function () {
     var div = $('<div><a href="#" rel="tooltip" title="Another tooltip"></a></div>')
-    var tooltip = div.appendTo('#qunit-fixture')
+    div.appendTo('#qunit-fixture')
                      .tooltip({ selector: 'a[rel=tooltip]', trigger: 'click' })
     div.find('a').trigger('click')
     ok($('.tooltip').is('.fade.in'), 'tooltip is faded in')
   })
 
   test('should show tooltip when toggle is called', function () {
-    var tooltip = $('<a href="#" rel="tooltip" title="tooltip on toggle"></a>')
+    $('<a href="#" rel="tooltip" title="tooltip on toggle"></a>')
       .appendTo('#qunit-fixture')
       .tooltip({trigger: 'manual'})
       .tooltip('toggle')
@@ -298,8 +298,8 @@ $(function () {
 
   test('should place tooltip inside window', function () {
     var container = $('<div />').appendTo('body')
-        .css({position: 'absolute', width: 200, height: 200, bottom: 0, left: 0}),
-        tooltip = $('<a href="#" title="Very very very very very very very very long tooltip">Hover me</a>')
+        .css({position: 'absolute', width: 200, height: 200, bottom: 0, left: 0})
+    $('<a href="#" title="Very very very very very very very very long tooltip">Hover me</a>')
       .css({position: 'absolute', top: 0, left: 0})
       .appendTo(container)
       .tooltip({placement: 'top', animate: false})
@@ -337,12 +337,12 @@ $(function () {
   })
 
   test('should add position class before positioning so that position-specific styles are taken into account', function () {
-    $('head').append('<style> .tooltip.right { white-space: nowrap; } .tooltip.right .tooltip-inner { max-width: none; } </style>')
+    $('head').append('<style id="test"> .tooltip.right { white-space: nowrap; } .tooltip.right .tooltip-inner { max-width: none; } </style>')
 
     var container = $('<div />').appendTo('body'),
         target = $('<a href="#" rel="tooltip" title="very very very very very very very very long tooltip in one line"></a>')
           .appendTo(container)
-          .tooltip({placement: 'right'})
+          .tooltip({placement: 'right', viewport: null})
           .tooltip('show'),
         tooltip = container.find('.tooltip')
 
@@ -352,6 +352,7 @@ $(function () {
     var topDiff =  top - top2
     ok(topDiff <= 1 && topDiff >= -1)
     target.tooltip('hide')
+    $('head #test').remove()
   })
 
   test('tooltip title test #1', function () {
@@ -428,4 +429,80 @@ $(function () {
     ttContainer.remove()
   })
 
+  test('should adjust the tip\'s top when up against the top of the viewport', function () {
+    $('head').append('<style id="test"> .tooltip .tooltip-inner { width: 200px; height: 200px; max-width: none; } </style>')
+
+    var container = $('<div />').appendTo('body'),
+      target = $('<a href="#" rel="tooltip" title="tip" style="position: fixed; top: 0px; left: 0px;"></a>')
+          .appendTo(container)
+          .tooltip({placement: 'right', viewport: {selector: 'body', padding: 12}})
+          .tooltip('show'),
+      tooltip = container.find('.tooltip')
+
+    ok( Math.round(tooltip.offset().top) === 12 )
+    target.tooltip('hide')
+    $('head #test').remove()
+  })
+
+  test('should adjust the tip\'s top when up against the bottom of the viewport', function () {
+    $('head').append('<style id="test"> .tooltip .tooltip-inner { width: 200px; height: 200px; max-width: none; } </style>')
+
+    var container = $('<div />').appendTo('body'),
+      target = $('<a href="#" rel="tooltip" title="tip" style="position: fixed; bottom: 0px; left: 0px;"></a>')
+          .appendTo(container)
+          .tooltip({placement: 'right', viewport: {selector: 'body', padding: 12}})
+          .tooltip('show'),
+      tooltip = container.find('.tooltip')
+
+    ok( Math.round(tooltip.offset().top) === Math.round($(window).height() - 12 - tooltip[0].offsetHeight) )
+    target.tooltip('hide')
+    $('head #test').remove()
+  })
+
+  test('should adjust the tip\'s left when up against the left of the viewport', function () {
+    $('head').append('<style id="test"> .tooltip .tooltip-inner { width: 200px; height: 200px; max-width: none; } </style>')
+
+    var container = $('<div />').appendTo('body'),
+      target = $('<a href="#" rel="tooltip" title="tip" style="position: fixed; top: 0px; left: 0px;"></a>')
+          .appendTo(container)
+          .tooltip({placement: 'bottom', viewport: {selector: 'body', padding: 12}})
+          .tooltip('show'),
+      tooltip = container.find('.tooltip')
+
+    ok( Math.round(tooltip.offset().left) === 12 )
+    target.tooltip('hide')
+    $('head #test').remove()
+  })
+
+  test('should adjust the tip\'s left when up against the right of the viewport', function () {
+    $('head').append('<style id="test"> .tooltip .tooltip-inner { width: 200px; height: 200px; max-width: none; } </style>')
+
+    var container = $('<div />').appendTo('body'),
+      target = $('<a href="#" rel="tooltip" title="tip" style="position: fixed; top: 0px; right: 0px;"></a>')
+          .appendTo(container)
+          .tooltip({placement: 'bottom', viewport: {selector: 'body', padding: 12}})
+          .tooltip('show'),
+      tooltip = container.find('.tooltip')
+
+    ok( Math.round(tooltip.offset().left) === Math.round($(window).width() - 12 - tooltip[0].offsetWidth) )
+    target.tooltip('hide')
+    $('head #test').remove()
+  })
+
+  test('should adjust the tip when up against the right of an arbitrary viewport', function () {
+    $('head').append('<style id="test"> .tooltip, .tooltip .tooltip-inner { width: 200px; height: 200px; max-width: none; } </style>')
+    $('head').append('<style id="viewport-style"> .container-viewport { position: absolute; top: 50px; left: 60px; width: 300px; height: 300px; } </style>')
+
+    var container = $('<div />', {class: 'container-viewport'}).appendTo('body'),
+      target = $('<a href="#" rel="tooltip" title="tip" style="position: fixed; top: 50px; left: 350px;"></a>')
+          .appendTo(container)
+          .tooltip({placement: 'bottom', viewport: '.container-viewport'})
+          .tooltip('show'),
+      tooltip = container.find('.tooltip')
+
+    ok( Math.round(tooltip.offset().left) === Math.round(60 + container.width() - tooltip[0].offsetWidth) )
+    target.tooltip('hide')
+    $('head #test').remove()
+    $('head #viewport-style').remove()
+  })
 })
